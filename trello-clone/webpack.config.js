@@ -46,7 +46,6 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            title: 'Covid-dashboard',
             template: 'index.html'
         }),
         new miniCss({

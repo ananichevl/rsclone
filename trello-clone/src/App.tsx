@@ -5,7 +5,6 @@ import { Layout } from 'antd';
 import Dashboard from './pages/Dashboard'
 import Board from './pages/Board'
 
-
 const { Header, Content, Footer } = Layout;
 
 const App: React.FC = () => {

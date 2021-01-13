@@ -13,3 +13,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.title {
+  min-width: 2rem;
+  max-width: 100%;
+  font-weight: 700;
+}

@@ -2,13 +2,14 @@ import React from 'react';
 import { Button } from 'antd';
 
 interface IButtonProps {
-    title: string
-    icon?: React.ReactNode
+  action(): void
+  title: string
+  icon?: React.ReactNode
 }
 
-const SimpleButton: React.FC<IButtonProps> = ({ title, icon }) => (
+const SimpleButton: React.FC<IButtonProps> = ({ action, title, icon }) => (
   <>
-    <Button icon={icon}>
+    <Button onClick={action} icon={icon}>
       {title}
     </Button>
   </>

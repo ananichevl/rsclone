@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'; // useEffect,
+import React, { createRef, useState } from 'react';
 import { Input } from 'antd';
 
 interface IInputProps {
@@ -7,25 +7,30 @@ interface IInputProps {
 
 const SimpleInput: React.FC<IInputProps> = ({ placeholder }) => {
   const [value] = useState();
-  const inputRef = useRef(null);
+  const inputRef = createRef<HTMLInputElement>();
 
-  // if (inputRef.current !== null) {
-  //   inputRef.current.focus();
-  // }
-
-  // useEffect(() => {
-  //   console.log(inputRef.value);
-  // });
+  useState(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+      // console.log(Input.value);
+    }
+  });
 
   return (
-    <div>
+    <>
       <Input
-        ref={inputRef}
+        // ref={inputRef}
         placeholder={placeholder}
-        // onChange={(e) => setValue(e.target.value)}
+        onChange={
+          (
+            e: React.FormEvent<HTMLInputElement>
+          ) => { const newValue = e.currentTarget.value;
+            console.log(newValue);
+          }
+        }
         value={value}
       />
-    </div>
+    </>
   );
 };
 

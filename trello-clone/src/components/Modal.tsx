@@ -4,7 +4,6 @@ import { Modal, Button } from 'antd';
 const ModalDialog: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-
   const handleOk = () => {
     setIsModalVisible(false);
   };
@@ -15,7 +14,7 @@ const ModalDialog: React.FC = () => {
 
   return (
     <>
-      <Button type="primary" onClick={showModal}>
+      <Button type="primary">
         Open Modal
       </Button>
       <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
@@ -27,4 +26,4 @@ const ModalDialog: React.FC = () => {
   );
 };
 
-export default ModalDialog
+export default ModalDialog;

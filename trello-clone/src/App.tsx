@@ -3,7 +3,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Layout } from 'antd';
 import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
-import Board from './pages/Board';
+import Board from './pages/board/Board';
 
 const { Header, Content, Footer } = Layout;
 

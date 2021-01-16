@@ -18,7 +18,7 @@ const App: React.FC = () => (
         <div className="site-layout-background" style={{ padding: 24, minHeight: 380 }}>
           <Switch>
             <Route component={Dashboard} path="/" exact />
-            <Route component={Board} path="/board" />
+            <Route component={Board} path="/board/:id" />
           </Switch>
         </div>
       </Content>

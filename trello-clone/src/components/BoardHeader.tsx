@@ -1,10 +1,14 @@
 import React from 'react';
 import '../pages/board/board.scss';
 
-const BoardHeader: React.FC = () => (
+interface IBoardHeaderProps {
+  title: string
+}
+
+const BoardHeader: React.FC<IBoardHeaderProps> = ({ title }) => (
   <div className="boardHeader">
     <span className="title" contentEditable="true">
-      Новая доска
+      {title}
     </span>
   </div>
 );

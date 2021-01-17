@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -6,26 +6,38 @@ import { Button } from 'antd';
 import Column from '../../components/column/Column';
 import './board.scss';
 import { IState } from '../../store/rootReducer';
+import { getBoard } from '../../service/Service';
 
 interface IBoardProps {
   id: string;
 }
 
 const Board: React.FC = () => {
-  const [counter, setCounter] = useState(0);
+  const [title, setTitle] = useState('');
+  const [columns, setColumns] = useState([]);
 
   const { id } = useParams<IBoardProps>();
-  console.log(id);
-  const boardName = useSelector<IState, string>((state) => state.selectedBoardName);
+  useEffect(() => {
+    (async function loadBoard() {
+      const board = await getBoard(id);
+      setTitle(board.title);
+      setColumns(board.columns);
+    }());
+  }, []);
 
-  const columns = new Array(counter).fill(<Column />);
+  const boardName = useSelector<IState, string>((state) => state.selectedBoardName) || title;
 
+  const columnCards = columns.map((column) => <Column boardId={id} columnTitle={column.title} />);
+  // const columns = new Array(counter).fill(<Column boardId={id} />);
   return (
     <>
       <h2 title={boardName} contentEditable="true">{boardName}</h2>
       <div className="boardBody">
-        {columns}
-        <Button onClick={() => setCounter(counter + 1)} icon={<PlusOutlined />}>
+        {columnCards}
+        <Button
+          onClick={() => setColumns([...columns, {}])}
+          icon={<PlusOutlined />}
+        >
           Добавить список
         </Button>
       </div>

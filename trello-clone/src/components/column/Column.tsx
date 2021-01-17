@@ -6,16 +6,23 @@ import { PlusOutlined, CheckOutlined } from '@ant-design/icons';
 import SimpleInput from '../simpleInput/SimpleInput';
 import Task from '../task/Task';
 import './column.scss';
+import { addColumn } from '../../service/Service';
 
-const Column: React.FC = () => {
+interface IColumnProps {
+  boardId: string
+  columnTitle: string
+}
+
+const Column: React.FC<IColumnProps> = ({ boardId, columnTitle }) => {
+  const [currentTask, setCurrentTask] = useState('');
   const [counter, setCounter] = useState<number>(0);
-  const [columnName, setColumnName] = useState<string>('');
-  const [isInputTitleVisible, setIsInputTitleVisible] = useState(true);
+  const [columnId, setColumnId] = useState('');
+  const [columnName, setColumnName] = useState<string>(columnTitle || '');
+  const [isInputTitleVisible, setIsInputTitleVisible] = useState(!columnTitle);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  console.log(columnName);
-
-  const showModal = () => {
+  const showModal = (task: string) => {
+    setCurrentTask(task);
     setIsModalVisible(true);
   };
 
@@ -23,8 +30,14 @@ const Column: React.FC = () => {
     setIsModalVisible(false);
   };
 
+  const handleCheck = async () => {
+    const result = await addColumn(boardId, columnName);
+    setColumnId(result.id);
+    setIsInputTitleVisible(false);
+  };
+
   const tasks = React.useMemo(() => new Array(counter).fill(
-    <Task onClick={showModal} />,
+    <Task onClick={showModal} boardId={boardId} columnId={columnId} />,
   ), [counter]);
   return (
     <>
@@ -37,7 +50,10 @@ const Column: React.FC = () => {
               <div>
                 <SimpleInput onChange={(value) => setColumnName(value)} placeholder="Добавить название" />
               </div>
-              <Button icon={<CheckOutlined />} onClick={() => setIsInputTitleVisible(false)} />
+              <Button
+                icon={<CheckOutlined />}
+                onClick={handleCheck}
+              />
             </div>
             <div style={{ display: isInputTitleVisible ? 'none' : 'flex' }}>{columnName}</div>
           </div>
@@ -59,7 +75,7 @@ const Column: React.FC = () => {
         onOk={handleCancel}
         onCancel={handleCancel}
       >
-        Text
+        {currentTask}
       </Modal>
     </>
   );

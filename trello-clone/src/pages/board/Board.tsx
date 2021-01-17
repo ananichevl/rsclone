@@ -27,7 +27,13 @@ const Board: React.FC = () => {
 
   const boardName = useSelector<IState, string>((state) => state.selectedBoardName) || title;
 
-  const columnCards = columns.map((column) => <Column boardId={id} columnTitle={column.title} />);
+  const columnCards = columns.map((column) => (
+    <Column
+      boardId={id}
+      columnTitle={column.title}
+      propColumnId={column.id}
+    />
+  ));
   // const columns = new Array(counter).fill(<Column boardId={id} />);
   return (
     <>

@@ -11,12 +11,13 @@ import { addColumn } from '../../service/Service';
 interface IColumnProps {
   boardId: string
   columnTitle: string
+  propColumnId: string
 }
 
-const Column: React.FC<IColumnProps> = ({ boardId, columnTitle }) => {
+const Column: React.FC<IColumnProps> = ({ boardId, columnTitle, propColumnId }) => {
   const [currentTask, setCurrentTask] = useState('');
   const [counter, setCounter] = useState<number>(0);
-  const [columnId, setColumnId] = useState('');
+  const [columnId, setColumnId] = useState(propColumnId || '');
   const [columnName, setColumnName] = useState<string>(columnTitle || '');
   const [isInputTitleVisible, setIsInputTitleVisible] = useState(!columnTitle);
   const [isModalVisible, setIsModalVisible] = useState(false);

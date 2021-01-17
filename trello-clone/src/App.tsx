@@ -9,13 +9,13 @@ const { Header, Content, Footer } = Layout;
 
 const App: React.FC = () => (
   <BrowserRouter>
-    <Layout>
+    <Layout style={{ height: '100vh' }}>
       <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
         <div className="logo" />
         <Navbar />
       </Header>
       <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64 }}>
-        <div className="site-layout-background" style={{ padding: 24, minHeight: 300 }}>
+        <div className="site-layout-background" style={{ padding: 24, minHeight: 380 }}>
           <Switch>
             <Route component={Dashboard} path="/" exact />
             <Route component={Board} path="/board/:id" />

@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import {
-  Card, Collapse, Modal, Button,
+  Card, Modal, Button,
 } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, CheckOutlined } from '@ant-design/icons';
 import SimpleInput from '../simpleInput/SimpleInput';
 import Task from '../task/Task';
-
-const { Panel } = Collapse;
+import './column.scss';
 
 const Column: React.FC = () => {
   const [counter, setCounter] = useState<number>(0);
   const [columnName, setColumnName] = useState<string>('');
+  const [isInputTitleVisible, setIsInputTitleVisible] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
+
+  console.log(columnName);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -27,19 +29,27 @@ const Column: React.FC = () => {
   return (
     <>
       <Card
+        style={{ marginRight: 16 }}
         className="board-column"
         title={(
-          <Collapse defaultActiveKey={['1']} ghost>
-            <Panel header={columnName} key="1">
-              <SimpleInput onChange={(value) => setColumnName(value)} placeholder="Добавить название" />
-            </Panel>
-          </Collapse>
+          <div>
+            <div className="board-column__title" style={{ display: isInputTitleVisible ? 'flex' : 'none' }}>
+              <div>
+                <SimpleInput onChange={(value) => setColumnName(value)} placeholder="Добавить название" />
+              </div>
+              <Button icon={<CheckOutlined />} onClick={() => setIsInputTitleVisible(false)} />
+            </div>
+            <div style={{ display: isInputTitleVisible ? 'none' : 'flex' }}>{columnName}</div>
+          </div>
         )}
         bordered={false}
-        style={{ background: '#1890ff' }}
       >
         {tasks}
-        <Button onClick={() => setCounter(counter + 1)} icon={<PlusOutlined />}>
+        <Button
+          onClick={() => setCounter(counter + 1)}
+          icon={<PlusOutlined />}
+          style={{ width: '100%', textAlign: 'left' }}
+        >
           Добавить задачу
         </Button>
       </Card>

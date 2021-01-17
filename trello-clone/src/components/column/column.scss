@@ -1,9 +1,7 @@
 .board-column {
-    width: 270px;
-    display: flex;
-    flex-direction: column;
+
 }
 
-.ant-card {
-    background: red;
+.board-column__title {
+  display: flex;
 }

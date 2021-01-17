@@ -1,5 +1,5 @@
 const headers = { 'Content-Type': 'application/json' };
-const server = 'http://localhost:4000';
+const server = 'https://trello-clone-bh.herokuapp.com';
 
 export async function createBoard(title: string): Promise<any> {
   const body = {

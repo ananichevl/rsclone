@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { Card, Collapse, Modal } from 'antd';
+import {
+  Card, Collapse, Modal, Button,
+} from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import SimpleButton from '../SimpleButton';
-import SimpleInput from '../SimpleInput';
+import SimpleInput from '../simpleInput/SimpleInput';
+import Task from '../task/Task';
 
 const { Panel } = Collapse;
 
@@ -20,7 +22,7 @@ const Column: React.FC = () => {
   };
 
   const tasks = React.useMemo(() => new Array(counter).fill(
-    <Card title={<span className="title" contentEditable="true">Новая задача</span>} onClick={showModal} />,
+    <Task onClick={showModal} />,
   ), [counter]);
   return (
     <>
@@ -32,12 +34,14 @@ const Column: React.FC = () => {
               <SimpleInput onChange={(value) => setColumnName(value)} placeholder="Добавить название" />
             </Panel>
           </Collapse>
-      )}
+        )}
         bordered={false}
         style={{ background: '#1890ff' }}
       >
         {tasks}
-        <SimpleButton action={() => setCounter(counter + 1)} title="Добавить задачу" icon={<PlusOutlined />} />
+        <Button onClick={() => setCounter(counter + 1)} icon={<PlusOutlined />}>
+          Добавить задачу
+        </Button>
       </Card>
       <Modal
         title="Задача"

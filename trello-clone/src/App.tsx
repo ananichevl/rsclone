@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Layout } from 'antd';
-import Navbar from './components/Navbar';
-import Dashboard from './pages/Dashboard';
+import Navbar from './components/navbar/Navbar';
+import Dashboard from './pages/dashboard/Dashboard';
 import Board from './pages/board/Board';
 
 const { Header, Content, Footer } = Layout;
@@ -15,7 +15,7 @@ const App: React.FC = () => (
         <Navbar />
       </Header>
       <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64 }}>
-        <div className="site-layout-background" style={{ padding: 24, minHeight: 380 }}>
+        <div className="site-layout-background" style={{ padding: 24, minHeight: 300 }}>
           <Switch>
             <Route component={Dashboard} path="/" exact />
             <Route component={Board} path="/board/:id" />

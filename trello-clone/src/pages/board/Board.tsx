@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-// import InputCard from '../../components/InputCard';
-import SimpleButton from '../../components/SimpleButton';
+import { Button } from 'antd';
 import Column from '../../components/column/Column';
-// import BoardHeader from '../../components/BoardHeader';
 import './board.scss';
 import { IState } from '../../store/rootReducer';
 
@@ -27,7 +25,9 @@ const Board: React.FC = () => {
       <h2 title={boardName} contentEditable="true">{boardName}</h2>
       <div className="boardBody">
         {columns}
-        <SimpleButton action={() => setCounter(counter + 1)} title="Добавить список" icon={<PlusOutlined />} />
+        <Button onClick={() => setCounter(counter + 1)} icon={<PlusOutlined />}>
+          Добавить список
+        </Button>
       </div>
     </>
   );

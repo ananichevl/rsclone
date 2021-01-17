@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, Collapse } from 'antd';
+import { Card, Collapse, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import SimpleButton from '../SimpleButton';
 import SimpleInput from '../SimpleInput';
@@ -9,8 +9,19 @@ const { Panel } = Collapse;
 const Column: React.FC = () => {
   const [counter, setCounter] = useState<number>(0);
   const [columnName, setColumnName] = useState<string>('');
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const tasks = React.useMemo(() => new Array(counter).fill(<Card title={<span className="title" contentEditable="true">Новая задача</span>} />), [counter]);
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const tasks = React.useMemo(() => new Array(counter).fill(
+    <Card title={<span className="title" contentEditable="true">Новая задача</span>} onClick={showModal} />,
+  ), [counter]);
   return (
     <>
       <Card
@@ -18,7 +29,7 @@ const Column: React.FC = () => {
         title={(
           <Collapse defaultActiveKey={['1']} ghost>
             <Panel header={columnName} key="1">
-              <SimpleInput setColumnHeader={setColumnName} placeholder="Добавить название" />
+              <SimpleInput onChange={(value) => setColumnName(value)} placeholder="Добавить название" />
             </Panel>
           </Collapse>
       )}
@@ -28,6 +39,14 @@ const Column: React.FC = () => {
         {tasks}
         <SimpleButton action={() => setCounter(counter + 1)} title="Добавить задачу" icon={<PlusOutlined />} />
       </Card>
+      <Modal
+        title="Задача"
+        visible={isModalVisible}
+        onOk={handleCancel}
+        onCancel={handleCancel}
+      >
+        Text
+      </Modal>
     </>
   );
 };

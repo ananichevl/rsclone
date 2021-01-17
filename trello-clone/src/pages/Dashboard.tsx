@@ -63,7 +63,7 @@ const Dashboard: React.FC = () => {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <SimpleInput placeholder="Добавить название доски" />
+        <SimpleInput onChange={(value) => dispatch(createSelectBoardAction(value))} placeholder="Добавить название доски" />
       </Modal>
     </>
   );

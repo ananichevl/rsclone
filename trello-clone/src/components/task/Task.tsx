@@ -8,11 +8,19 @@ interface ITaskProps {
   onClick: (task: string) => void
   boardId: string
   columnId: string
+  taskProp: TaskModel
 }
 
-const Task: React.FC<ITaskProps> = ({ onClick, boardId, columnId }) => {
-  const [taskName, setTaskName] = useState<string>('');
-  const [isInputTitleVisible, setIsInputTitleVisible] = useState(true);
+export interface TaskModel {
+  id?: string
+  title?: string
+}
+
+const Task: React.FC<ITaskProps> = ({
+  onClick, boardId, columnId, taskProp,
+}) => {
+  const [taskName, setTaskName] = useState<string>(taskProp.title || '');
+  const [isInputTitleVisible, setIsInputTitleVisible] = useState(!taskProp.title);
 
   const handleCreateTask = async () => {
     const task = await createTask(boardId, columnId, taskName);

@@ -7,11 +7,12 @@ import SimpleInput from '../../components/simpleInput/SimpleInput';
 import createSelectBoardAction from '../../store/actions/selectBoard';
 import { IState } from '../../store/rootReducer';
 import { createBoard, getBoards } from '../../service/Service';
+import { BoardModel } from '../board/Board';
 import './dashboard.scss';
 
 const Dashboard: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [boards, setBoards] = useState([]);
+  const [boards, setBoards] = useState<BoardModel[]>([]);
   const dispatch = useDispatch();
   const showModal = () => {
     setIsModalVisible(true);

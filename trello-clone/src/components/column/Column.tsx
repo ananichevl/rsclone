@@ -9,7 +9,7 @@ import {
   ProjectOutlined,
 } from '@ant-design/icons';
 import SimpleInput from '../simpleInput/SimpleInput';
-import Task from '../task/Task';
+import Task, { TaskModel } from '../task/Task';
 import './column.scss';
 import { addColumn } from '../../service/Service';
 
@@ -17,16 +17,21 @@ const { TextArea } = Input;
 
 interface IColumnProps {
   boardId: string
-  columnTitle: string
-  propColumnId: string
+  columnProp: ColumnModel
 }
 
-const Column: React.FC<IColumnProps> = ({ boardId, columnTitle, propColumnId }) => {
+export interface ColumnModel {
+  id?: string
+  title?: string
+  tasks?: TaskModel[]
+}
+
+const Column: React.FC<IColumnProps> = ({ boardId, columnProp }) => {
   const [currentTask, setCurrentTask] = useState('');
-  const [counter, setCounter] = useState<number>(0);
-  const [columnId, setColumnId] = useState(propColumnId || '');
-  const [columnName, setColumnName] = useState<string>(columnTitle || '');
-  const [isInputTitleVisible, setIsInputTitleVisible] = useState(!columnTitle);
+  const [columnId, setColumnId] = useState(columnProp.id || '');
+  const [columnName, setColumnName] = useState<string>(columnProp.title || '');
+  const [tasks, setTasks] = useState<TaskModel[]>(columnProp.tasks || []);
+  const [isInputTitleVisible, setIsInputTitleVisible] = useState(!columnProp.title);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const showModal = (task: string) => {
@@ -44,9 +49,9 @@ const Column: React.FC<IColumnProps> = ({ boardId, columnTitle, propColumnId }) 
     setIsInputTitleVisible(false);
   };
 
-  const tasks = React.useMemo(() => new Array(counter).fill(
-    <Task onClick={showModal} boardId={boardId} columnId={columnId} />,
-  ), [counter]);
+  const taskCards = tasks.map((task) => (
+    <Task onClick={showModal} boardId={boardId} columnId={columnId} taskProp={task} />
+  ));
   return (
     <>
       <Card
@@ -68,9 +73,9 @@ const Column: React.FC<IColumnProps> = ({ boardId, columnTitle, propColumnId }) 
         )}
         bordered={false}
       >
-        {tasks}
+        {taskCards}
         <Button
-          onClick={() => setCounter(counter + 1)}
+          onClick={() => setTasks([...tasks, {}])}
           icon={<PlusOutlined />}
           style={{ width: '100%', textAlign: 'left' }}
         >

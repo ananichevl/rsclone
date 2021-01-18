@@ -3,7 +3,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Button } from 'antd';
-import Column from '../../components/column/Column';
+import Column, { ColumnModel } from '../../components/column/Column';
 import './board.scss';
 import { IState } from '../../store/rootReducer';
 import { getBoard } from '../../service/Service';
@@ -12,9 +12,15 @@ interface IBoardProps {
   id: string;
 }
 
+export interface BoardModel {
+  id: string
+  title: string
+  columns: ColumnModel[]
+}
+
 const Board: React.FC = () => {
   const [title, setTitle] = useState('');
-  const [columns, setColumns] = useState([]);
+  const [columns, setColumns] = useState<ColumnModel[]>([]);
 
   const { id } = useParams<IBoardProps>();
   useEffect(() => {
@@ -30,11 +36,9 @@ const Board: React.FC = () => {
   const columnCards = columns.map((column) => (
     <Column
       boardId={id}
-      columnTitle={column.title}
-      propColumnId={column.id}
+      columnProp={column}
     />
   ));
-  // const columns = new Array(counter).fill(<Column boardId={id} />);
   return (
     <>
       <h2 title={boardName} contentEditable="true">{boardName}</h2>

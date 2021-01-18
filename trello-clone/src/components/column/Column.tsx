@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
 import {
-  Card, Modal, Button,
+  Card, Modal, Button, Input,
 } from 'antd';
-import { PlusOutlined, CheckOutlined } from '@ant-design/icons';
+import {
+  PlusOutlined,
+  CheckOutlined,
+  AlignLeftOutlined,
+  ProjectOutlined,
+} from '@ant-design/icons';
 import SimpleInput from '../simpleInput/SimpleInput';
 import Task from '../task/Task';
 import './column.scss';
 import { addColumn } from '../../service/Service';
+
+const { TextArea } = Input;
 
 interface IColumnProps {
   boardId: string
@@ -71,12 +78,29 @@ const Column: React.FC<IColumnProps> = ({ boardId, columnTitle, propColumnId }) 
         </Button>
       </Card>
       <Modal
-        title="Задача"
+        title={(
+          <>
+            <ProjectOutlined className="icon-task-title" />
+            {currentTask}
+          </>
+        )}
         visible={isModalVisible}
         onOk={handleCancel}
         onCancel={handleCancel}
+        footer={[
+          <Button key="back" onClick={handleCancel}>
+            Отмена
+          </Button>,
+          <Button key="submit" type="primary" onClick={handleCancel}>
+            Сохранить
+          </Button>,
+        ]}
       >
-        {currentTask}
+        <div className="description">
+          <AlignLeftOutlined className="icon-description" />
+          Описание:
+        </div>
+        <TextArea rows={4} />
       </Modal>
     </>
   );

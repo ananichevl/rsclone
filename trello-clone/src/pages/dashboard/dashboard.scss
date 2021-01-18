@@ -1,0 +1,28 @@
+.boards-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.ant-card-body {
+  padding: 5px;
+}
+
+.board, .create-board-btn {
+  width: 150px;
+  height: 75px;
+  margin: 0 1rem 1rem 0;
+
+  .icon {
+    margin-right: 5px;
+  }
+}
+
+.board {
+  padding: 0 5px;
+}
+
+.create-board-btn {
+  padding: 20px 10px;
+  background-color: rgb(230, 238, 248);
+  text-align: center;
+}

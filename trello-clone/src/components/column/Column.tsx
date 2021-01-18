@@ -16,18 +16,22 @@ import { addColumn } from '../../service/Service';
 const { TextArea } = Input;
 
 interface IColumnProps {
-  boardId: string
-  columnTitle: string
-  propColumnId: string
+  boardId: string;
+  columnTitle: string;
+  propColumnId: string;
 }
 
-const Column: React.FC<IColumnProps> = ({ boardId, columnTitle, propColumnId }) => {
+const Column: React.FC<IColumnProps> = ({
+  boardId,
+  columnTitle,
+  propColumnId,
+}) => {
   const [currentTask, setCurrentTask] = useState('');
-  const [counter, setCounter] = useState<number>(0);
   const [columnId, setColumnId] = useState(propColumnId || '');
   const [columnName, setColumnName] = useState<string>(columnTitle || '');
   const [isInputTitleVisible, setIsInputTitleVisible] = useState(!columnTitle);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [tasks, setTasks] = useState([]);
 
   const showModal = (task: string) => {
     setCurrentTask(task);
@@ -44,9 +48,17 @@ const Column: React.FC<IColumnProps> = ({ boardId, columnTitle, propColumnId }) 
     setIsInputTitleVisible(false);
   };
 
-  const tasks = React.useMemo(() => new Array(counter).fill(
-    <Task onClick={showModal} boardId={boardId} columnId={columnId} />,
-  ), [counter]);
+  const tasksCards = tasks
+    .map((value, index) => (
+      <Task
+        onClick={showModal}
+        boardId={boardId}
+        index={index}
+        columnId={columnId}
+        move={(ref) => setTasks([...tasks, ref])}
+      />
+    ));
+  console.log(tasks);
   return (
     <>
       <Card
@@ -54,23 +66,28 @@ const Column: React.FC<IColumnProps> = ({ boardId, columnTitle, propColumnId }) 
         className="board-column"
         title={(
           <div>
-            <div className="board-column__title" style={{ display: isInputTitleVisible ? 'flex' : 'none' }}>
+            <div
+              className="board-column__title"
+              style={{ display: isInputTitleVisible ? 'flex' : 'none' }}
+            >
               <div>
-                <SimpleInput onChange={(value) => setColumnName(value)} placeholder="Добавить название" />
+                <SimpleInput
+                  onChange={(value) => setColumnName(value)}
+                  placeholder="Добавить название"
+                />
               </div>
-              <Button
-                icon={<CheckOutlined />}
-                onClick={handleCheck}
-              />
+              <Button icon={<CheckOutlined />} onClick={handleCheck} />
             </div>
-            <div style={{ display: isInputTitleVisible ? 'none' : 'flex' }}>{columnName}</div>
+            <div style={{ display: isInputTitleVisible ? 'none' : 'flex' }}>
+              {columnName}
+            </div>
           </div>
         )}
         bordered={false}
       >
-        {tasks}
+        {tasksCards}
         <Button
-          onClick={() => setCounter(counter + 1)}
+          onClick={() => setTasks([...tasks, {}])}
           icon={<PlusOutlined />}
           style={{ width: '100%', textAlign: 'left' }}
         >

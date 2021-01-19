@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Card } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
+import { Draggable } from 'react-beautiful-dnd';
 import SimpleInput from '../simpleInput/SimpleInput';
 import { createTask } from '../../service/Service';
 
@@ -9,18 +10,22 @@ interface ITaskProps {
   boardId: string
   columnId: string
   taskProp: TaskModel
+  index: number
 }
 
 export interface TaskModel {
-  id?: string
+  id: string
   title?: string
 }
 
 const Task: React.FC<ITaskProps> = ({
-  onClick, boardId, columnId, taskProp,
+  onClick, boardId, columnId, taskProp, index,
 }) => {
   const [taskName, setTaskName] = useState<string>(taskProp.title || '');
   const [isInputTitleVisible, setIsInputTitleVisible] = useState(!taskProp.title);
+  useEffect(() => {
+    setTaskName(taskProp.title || '');
+  }, [taskProp.title]);
 
   const handleCreateTask = async () => {
     const task = await createTask(boardId, columnId, taskName);
@@ -29,29 +34,39 @@ const Task: React.FC<ITaskProps> = ({
   };
 
   return (
-    <Card
-      type="inner"
-      style={{ marginBottom: 16 }}
-      hoverable
-    >
-      <div>
-        <div className="board-column__title" style={{ display: isInputTitleVisible ? 'flex' : 'none' }}>
-          <div>
-            <SimpleInput onChange={(value) => setTaskName(value)} placeholder="Добавить название" />
-          </div>
-          <Button icon={<CheckOutlined />} onClick={handleCreateTask} />
-        </div>
+    <Draggable key={taskProp.id} draggableId={taskProp.id} index={index}>
+      {(provided) => (
         <div
-          role="button"
-          onKeyUp={(e) => console.log(e)}
-          onClick={() => onClick(taskName)}
-          style={{ display: isInputTitleVisible ? 'none' : 'flex', outline: 'none' }}
-          tabIndex={0}
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
         >
-          {taskName}
+          <Card
+            type="inner"
+            style={{ marginBottom: 16 }}
+            hoverable
+          >
+            <div>
+              <div className="board-column__title" style={{ display: isInputTitleVisible ? 'flex' : 'none' }}>
+                <div>
+                  <SimpleInput onChange={(value) => setTaskName(value)} placeholder="Добавить название" />
+                </div>
+                <Button icon={<CheckOutlined />} onClick={handleCreateTask} />
+              </div>
+              <div
+                role="button"
+                onKeyUp={(e) => console.log(e)}
+                onClick={() => onClick(taskName)}
+                style={{ display: isInputTitleVisible ? 'none' : 'flex', outline: 'none' }}
+                tabIndex={0}
+              >
+                {taskName}
+              </div>
+            </div>
+          </Card>
         </div>
-      </div>
-    </Card>
+      )}
+    </Draggable>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Card, Modal, Button, Input,
 } from 'antd';
@@ -8,6 +8,7 @@ import {
   AlignLeftOutlined,
   ProjectOutlined,
 } from '@ant-design/icons';
+import { Droppable } from 'react-beautiful-dnd';
 import SimpleInput from '../simpleInput/SimpleInput';
 import Task, { TaskModel } from '../task/Task';
 import './column.scss';
@@ -34,6 +35,10 @@ const Column: React.FC<IColumnProps> = ({ boardId, columnProp }) => {
   const [isInputTitleVisible, setIsInputTitleVisible] = useState(!columnProp.title);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
+  useEffect(() => {
+    setTasks(columnProp.tasks || []);
+  }, [columnProp.tasks]);
+
   const showModal = (task: string) => {
     setCurrentTask(task);
     setIsModalVisible(true);
@@ -49,8 +54,8 @@ const Column: React.FC<IColumnProps> = ({ boardId, columnProp }) => {
     setIsInputTitleVisible(false);
   };
 
-  const taskCards = tasks.map((task) => (
-    <Task onClick={showModal} boardId={boardId} columnId={columnId} taskProp={task} />
+  const taskCards = tasks.map((task, index) => (
+    <Task onClick={showModal} boardId={boardId} columnId={columnId} taskProp={task} index={index} />
   ));
   return (
     <>
@@ -73,14 +78,24 @@ const Column: React.FC<IColumnProps> = ({ boardId, columnProp }) => {
         )}
         bordered={false}
       >
-        {taskCards}
-        <Button
-          onClick={() => setTasks([...tasks, {}])}
-          icon={<PlusOutlined />}
-          style={{ width: '100%', textAlign: 'left' }}
-        >
-          Добавить задачу
-        </Button>
+        <Droppable key={columnId} droppableId={columnId}>
+          {(provided) => (
+            <div
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
+              {taskCards}
+              <Button
+                onClick={() => setTasks([...tasks, { id: '123' }])}
+                icon={<PlusOutlined />}
+                style={{ width: '100%', textAlign: 'left' }}
+              >
+                Добавить задачу
+              </Button>
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
       </Card>
       <Modal
         title={(

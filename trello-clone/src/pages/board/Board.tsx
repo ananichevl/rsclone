@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { DragDropContext, DraggableLocation, DropResult } from 'react-beautiful-dnd';
+import {
+  DragDropContext, DraggableLocation, Droppable, DropResult,
+} from 'react-beautiful-dnd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -40,8 +42,16 @@ const Board: React.FC = () => {
 
   const boardName = useSelector<IState, string>((state) => state.selectedBoardName) || title;
 
-  const reorder = (startIndex: number, endIndex: number, task?: TaskModel[]) => {
-    const result: TaskModel[] = task ? Array.from(task) : [];
+  const reorder = (startIndex: number, endIndex: number, tasks?: TaskModel[]) => {
+    const result: TaskModel[] = tasks ? Array.from(tasks) : [];
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+
+    return result;
+  };
+
+  const reorderColumns = (startIndex: number, endIndex: number, columns?: ColumnModel[]) => {
+    const result: ColumnModel[] = columns ? Array.from(columns) : [];
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
 
@@ -69,9 +79,14 @@ const Board: React.FC = () => {
   };
 
   const onDragEnd = (result: DropResult) => {
-    const { source, destination } = result;
+    const { source, destination, type } = result;
 
     if (!destination) {
+      return;
+    }
+
+    if (type === 'column') {
+      setColumns(reorderColumns(source.index, destination.index, columns));
       return;
     }
 
@@ -94,10 +109,12 @@ const Board: React.FC = () => {
     }
   };
 
-  const columnCards = columns.map((column) => (
+  const columnCards = columns.map((column, index) => (
     <Column
       boardId={id}
       columnProp={column}
+      index={index}
+      updateBoard={setColumns}
     />
   ));
 
@@ -106,7 +123,18 @@ const Board: React.FC = () => {
       <h2 title={boardName} contentEditable="true">{boardName}</h2>
       <div className="boardBody" style={{ display: 'flex' }}>
         <DragDropContext onDragEnd={onDragEnd}>
-          {columnCards}
+          <Droppable key={id} droppableId={id} direction="horizontal" type="column">
+            {(provided) => (
+              <div
+                style={{ display: 'flex' }}
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                {columnCards}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
           <Button
             onClick={() => setColumns([...columns, {}])}
             icon={<PlusOutlined />}

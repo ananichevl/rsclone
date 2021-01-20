@@ -1,4 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
 import { Button, Card } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
 import { Draggable } from 'react-beautiful-dnd';
@@ -11,6 +16,7 @@ interface ITaskProps {
   columnId: string
   taskProp: TaskModel
   index: number
+  updateColumn: Dispatch<SetStateAction<TaskModel[]>>
 }
 
 export interface TaskModel {
@@ -19,7 +25,7 @@ export interface TaskModel {
 }
 
 const Task: React.FC<ITaskProps> = ({
-  onClick, boardId, columnId, taskProp, index,
+  onClick, boardId, columnId, taskProp, index, updateColumn,
 }) => {
   const [taskName, setTaskName] = useState<string>(taskProp.title || '');
   const [isInputTitleVisible, setIsInputTitleVisible] = useState(!taskProp.title);
@@ -27,9 +33,13 @@ const Task: React.FC<ITaskProps> = ({
     setTaskName(taskProp.title || '');
   }, [taskProp.title]);
 
+  useEffect(() => {
+    setTaskName(taskProp.title || '');
+  }, [taskProp.title]);
+
   const handleCreateTask = async () => {
     const task = await createTask(boardId, columnId, taskName);
-    console.log(task);
+    updateColumn((prevState) => [...prevState.slice(0, prevState.length - 1), task]);
     setIsInputTitleVisible(false);
   };
 

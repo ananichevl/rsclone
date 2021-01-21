@@ -79,11 +79,11 @@ const Task: React.FC<ITaskProps> = ({
   const changeTaskName = () => {
     setTaskName(taskName);
     setIsInputTitleVisible(true);
+    setIsModalVisible(false);
   };
 
   const changeModalTaskName = () => {
     setTaskName(taskName);
-    setIsModalVisible(false);
   };
 
   return (

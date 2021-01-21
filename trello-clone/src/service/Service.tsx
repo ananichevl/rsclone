@@ -110,3 +110,32 @@ export async function getBoard(id: string): Promise<any> {
 
   return Promise.resolve('error');
 }
+
+export async function updateTask(
+  boardId: string, title: string, columnId: string, taskId: string, description: string,
+): Promise<any> {
+  const body = {
+    title,
+    order: 0,
+    boardId,
+    columnId,
+    description,
+  };
+
+  const requestOptions = {
+    headers,
+    method: 'PUT',
+    body: JSON.stringify(body),
+  };
+
+  try {
+    const response = await fetch(`${server}/boards/${boardId}/tasks/${taskId}`, requestOptions);
+    if (response.ok) {
+      return await response.json();
+    }
+  } catch (e) {
+    return e;
+  }
+
+  return Promise.resolve('error');
+}

@@ -72,6 +72,7 @@ const Column: React.FC<IColumnProps> = ({
       taskProp={task}
       index={index}
       updateColumn={setTasks}
+      onClick={() => console.log('click')}
     />
   ));
   return (

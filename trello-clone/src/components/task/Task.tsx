@@ -4,11 +4,17 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { Button, Card } from 'antd';
-import { CheckOutlined } from '@ant-design/icons';
+import {
+  Button, Card, Modal, Input,
+} from 'antd';
+import {
+  CheckOutlined, EditOutlined, AlignLeftOutlined, ProjectOutlined,
+} from '@ant-design/icons';
 import { Draggable } from 'react-beautiful-dnd';
 import SimpleInput from '../simpleInput/SimpleInput';
 import { createTask } from '../../service/Service';
+
+const { TextArea } = Input;
 
 interface ITaskProps {
   onClick: (task: string) => void
@@ -25,14 +31,11 @@ export interface TaskModel {
 }
 
 const Task: React.FC<ITaskProps> = ({
-  onClick, boardId, columnId, taskProp, index, updateColumn,
+  boardId, columnId, taskProp, index, updateColumn,
 }) => {
   const [taskName, setTaskName] = useState<string>(taskProp.title || '');
   const [isInputTitleVisible, setIsInputTitleVisible] = useState(!taskProp.title);
-  useEffect(() => {
-    setTaskName(taskProp.title || '');
-  }, [taskProp.title]);
-
+  const [isModalVisible, setIsModalVisible] = useState(false);
   useEffect(() => {
     setTaskName(taskProp.title || '');
   }, [taskProp.title]);
@@ -43,40 +46,89 @@ const Task: React.FC<ITaskProps> = ({
     setIsInputTitleVisible(false);
   };
 
+  const showModal = (taskName: string) => {
+    setTaskName(taskName);
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const changeTaskName = () => {
+    setTaskName(taskName);
+    setIsInputTitleVisible(true);
+  };
+
+  const changeModalTaskName = () => {
+    setTaskName(taskName);
+    setIsModalVisible(false);
+  };
+
   return (
-    <Draggable key={taskProp.id} draggableId={taskProp.id} index={index}>
-      {(provided) => (
-        <div
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-        >
-          <Card
-            type="inner"
-            style={{ marginBottom: 16 }}
-            hoverable
+    <>
+      <Draggable key={taskProp.id} draggableId={taskProp.id} index={index}>
+        {(provided) => (
+          <div
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
           >
-            <div>
-              <div className="board-column__title" style={{ display: isInputTitleVisible ? 'flex' : 'none' }}>
-                <div>
-                  <SimpleInput onChange={(value) => setTaskName(value)} placeholder="Добавить название" />
+            <Card
+              type="inner"
+              style={{ marginBottom: 16 }}
+              hoverable
+            >
+              <div>
+                <div className="board-column__title" style={{ display: isInputTitleVisible ? 'flex' : 'none' }}>
+                  <div>
+                    <SimpleInput onChange={(value) => setTaskName(value)} placeholder="Добавить название" />
+                  </div>
+                  <Button icon={<CheckOutlined />} onClick={handleCreateTask} />
                 </div>
-                <Button icon={<CheckOutlined />} onClick={handleCreateTask} />
+                <div
+                  role="button"
+                  onKeyUp={(e) => console.log(e)}
+                  onClick={() => showModal(taskName)}
+                  style={{ display: isInputTitleVisible ? 'none' : 'flex', outline: 'none' }}
+                  tabIndex={0}
+                >
+                  {taskName}
+                  <Button icon={<EditOutlined style={{ width: '12px', height: '12px' }} />} onClick={changeTaskName} ghost style={{ marginLeft: 'auto' }} />
+                </div>
               </div>
-              <div
-                role="button"
-                onKeyUp={(e) => console.log(e)}
-                onClick={() => onClick(taskName)}
-                style={{ display: isInputTitleVisible ? 'none' : 'flex', outline: 'none' }}
-                tabIndex={0}
-              >
-                {taskName}
-              </div>
+            </Card>
+          </div>
+        )}
+      </Draggable>
+      <Modal
+        title={(
+          <>
+            <div>
+              <ProjectOutlined className="icon-task-title" />
+              <h4 title={taskName} contentEditable="true">{taskName}</h4>
             </div>
-          </Card>
+          </>
+    )}
+        visible={isModalVisible}
+        onOk={handleCancel}
+        onCancel={handleCancel}
+        footer={[
+          <Button key="back" onClick={handleCancel}>
+            Отмена
+          </Button>,
+          <Button key="submit" type="primary" onClick={changeModalTaskName}>
+            Сохранить
+          </Button>,
+        ]}
+      >
+        <div className="description">
+          <AlignLeftOutlined className="icon-description" />
+          Описание:
         </div>
-      )}
-    </Draggable>
+        <TextArea rows={4} />
+      </Modal>
+    </>
   );
 };
 

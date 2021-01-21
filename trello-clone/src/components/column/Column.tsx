@@ -1,22 +1,13 @@
 import React, {
   useState, useEffect, Dispatch, SetStateAction,
 } from 'react';
-import {
-  Card, Modal, Button, Input,
-} from 'antd';
-import {
-  PlusOutlined,
-  CheckOutlined,
-  AlignLeftOutlined,
-  ProjectOutlined,
-} from '@ant-design/icons';
+import { Card, Button } from 'antd';
+import { PlusOutlined, CheckOutlined } from '@ant-design/icons';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import SimpleInput from '../simpleInput/SimpleInput';
 import Task, { TaskModel } from '../task/Task';
 import './column.scss';
 import { addColumn } from '../../service/Service';
-
-const { TextArea } = Input;
 
 interface IColumnProps {
   boardId: string
@@ -37,13 +28,10 @@ const Column: React.FC<IColumnProps> = ({
   index,
   updateBoard,
 }) => {
-  const [currentTask, setCurrentTask] = useState('');
   const [columnId, setColumnId] = useState(columnProp.id || '');
   const [columnName, setColumnName] = useState<string>(columnProp.title || '');
   const [tasks, setTasks] = useState<TaskModel[]>(columnProp.tasks || []);
   const [isInputTitleVisible, setIsInputTitleVisible] = useState(!columnProp.title);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  console.log(tasks);
 
   useEffect(() => {
     setTasks(columnProp.tasks || []);
@@ -69,15 +57,6 @@ const Column: React.FC<IColumnProps> = ({
     });
   }, [tasks]);
 
-  const showModal = (task: string) => {
-    setCurrentTask(task);
-    setIsModalVisible(true);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
-
   const handleCheck = async () => {
     const column = await addColumn(boardId, columnName);
     column.title = columnName;
@@ -88,7 +67,6 @@ const Column: React.FC<IColumnProps> = ({
 
   const taskCards = tasks.map((task, index) => (
     <Task
-      onClick={showModal}
       boardId={boardId}
       columnId={columnId}
       taskProp={task}
@@ -145,31 +123,6 @@ const Column: React.FC<IColumnProps> = ({
           </div>
         )}
       </Draggable>
-      <Modal
-        title={(
-          <>
-            <ProjectOutlined className="icon-task-title" />
-            {currentTask}
-          </>
-        )}
-        visible={isModalVisible}
-        onOk={handleCancel}
-        onCancel={handleCancel}
-        footer={[
-          <Button key="back" onClick={handleCancel}>
-            Отмена
-          </Button>,
-          <Button key="submit" type="primary" onClick={handleCancel}>
-            Сохранить
-          </Button>,
-        ]}
-      >
-        <div className="description">
-          <AlignLeftOutlined className="icon-description" />
-          Описание:
-        </div>
-        <TextArea rows={4} />
-      </Modal>
     </>
   );
 };

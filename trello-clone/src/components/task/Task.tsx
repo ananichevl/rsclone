@@ -58,11 +58,11 @@ const Task: React.FC<ITaskProps> = ({
   const changeTaskName = () => {
     setTaskName(taskName);
     setIsInputTitleVisible(true);
+    setIsModalVisible(false);
   };
 
   const changeModalTaskName = () => {
     setTaskName(taskName);
-    setIsModalVisible(false);
   };
 
   return (
@@ -94,7 +94,7 @@ const Task: React.FC<ITaskProps> = ({
                   tabIndex={0}
                 >
                   {taskName}
-                  <Button icon={<EditOutlined style={{ width: '12px', height: '12px' }} />} onClick={changeTaskName} ghost style={{ marginLeft: 'auto' }} />
+                  <Button icon={<EditOutlined className="icon-edit" style={{ width: '12px', height: '12px' }} />} onClick={changeTaskName} ghost style={{ marginLeft: 'auto' }} />
                 </div>
               </div>
             </Card>

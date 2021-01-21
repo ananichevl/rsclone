@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, EditOutlined } from '@ant-design/icons';
 import { Modal, Card, Button } from 'antd';
 import SimpleInput from '../../components/simpleInput/SimpleInput';
 import createSelectBoardAction from '../../store/actions/selectBoard';
@@ -46,7 +46,10 @@ const Dashboard: React.FC = () => {
       onClick={() => history.push(`board/${board.id}`)}
       hoverable
     >
-      {board.title}
+      <div>
+        {board.title}
+      </div>
+      <Button icon={<EditOutlined className="icon-edit" style={{ width: '12px', height: '12px' }} />} onClick={showModal} style={{ position: 'absolute', top: '30px', left: '100px' }} />
     </Card>
   ));
 

@@ -1,7 +1,7 @@
 import { BoardModel } from '../pages/board/Board';
 
 const headers = { 'Content-Type': 'application/json' };
-const server = 'https://trello-clone-bh.herokuapp.com';
+const server = 'http://localhost:4000';
 
 export async function createBoard(title: string): Promise<BoardModel | any> {
   const body = {
@@ -26,9 +26,10 @@ export async function createBoard(title: string): Promise<BoardModel | any> {
   return Promise.resolve('error');
 }
 
-export async function addColumn(id: string, title: string): Promise<any> {
+export async function addColumn(id: string, title: string, order: number): Promise<any> {
   const body = {
     title,
+    order,
   };
 
   const requestOptions = {
@@ -38,7 +39,7 @@ export async function addColumn(id: string, title: string): Promise<any> {
   };
 
   try {
-    const response = await fetch(`${server}/boards/${id}/column-v2`, requestOptions);
+    const response = await fetch(`${server}/boards/${id}/columns`, requestOptions);
     if (response.ok) {
       return await response.json();
     }
@@ -49,11 +50,15 @@ export async function addColumn(id: string, title: string): Promise<any> {
   return Promise.resolve('error');
 }
 
-export async function createTask(boardId: string, columnId: string, title: string): Promise<any> {
+export async function createTask(
+  boardId: string,
+  columnId: string,
+  order: number,
+  title: string,
+): Promise<any> {
   const body = {
     title,
-    order: 0,
-    boardId,
+    order,
     columnId,
   };
 
@@ -64,7 +69,7 @@ export async function createTask(boardId: string, columnId: string, title: strin
   };
 
   try {
-    const response = await fetch(`${server}/boards/${boardId}/tasks`, requestOptions);
+    const response = await fetch(`${server}/boards/${boardId}/columns/${columnId}/tasks`, requestOptions);
     if (response.ok) {
       return await response.json();
     }
@@ -112,14 +117,19 @@ export async function getBoard(id: string): Promise<any> {
 }
 
 export async function updateTask(
-  boardId: string, title: string, columnId: string, taskId: string, description: string,
+  boardId: string,
+  columnId: string,
+  taskId: string,
+  order?: number,
+  newColumnId?: string,
+  title?: string,
+  description?: string,
 ): Promise<any> {
   const body = {
     title,
-    order: 0,
-    boardId,
-    columnId,
+    order,
     description,
+    newColumnId,
   };
 
   const requestOptions = {
@@ -129,7 +139,36 @@ export async function updateTask(
   };
 
   try {
-    const response = await fetch(`${server}/boards/${boardId}/tasks/${taskId}`, requestOptions);
+    const response = await fetch(`${server}/boards/${boardId}/columns/${columnId}/tasks/${taskId}`, requestOptions);
+    if (response.ok) {
+      return await response.json();
+    }
+  } catch (e) {
+    return e;
+  }
+
+  return Promise.resolve('error');
+}
+
+export async function updateColumn(
+  boardId: string,
+  columnId: string,
+  order?: number,
+  title?: string,
+): Promise<any> {
+  const body = {
+    title,
+    order,
+  };
+
+  const requestOptions = {
+    headers,
+    method: 'PUT',
+    body: JSON.stringify(body),
+  };
+
+  try {
+    const response = await fetch(`${server}/boards/${boardId}/columns/${columnId}`, requestOptions);
     if (response.ok) {
       return await response.json();
     }

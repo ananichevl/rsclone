@@ -21,20 +21,20 @@ interface ITaskProps {
   boardId: string
   columnId: string
   taskProp: TaskModel
-  index: number
   updateColumn: Dispatch<SetStateAction<TaskModel[]>>
 }
 
 export interface TaskModel {
   id: string
+  order: number
   title?: string
   description?: string
 }
 
 const Task: React.FC<ITaskProps> = ({
-  boardId, columnId, taskProp, index, updateColumn,
+  boardId, columnId, taskProp, updateColumn,
 }) => {
-  const [taskName, setTaskName] = useState<string>(taskProp.title || '');
+  const [taskName, setTaskName] = useState<string>((taskProp && taskProp.title) || '');
   const [isInputTitleVisible, setIsInputTitleVisible] = useState(!taskProp.title);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isTextAreaVisible, setIsTextAreaVisible] = useState(!taskProp.description);
@@ -48,13 +48,22 @@ const Task: React.FC<ITaskProps> = ({
   }, [taskProp.description]);
 
   const handleCreateTask = async () => {
-    const task = await createTask(boardId, columnId, taskName);
+    console.log(taskProp);
+    const task = await createTask(boardId, columnId, taskProp.order, taskName);
     updateColumn((prevState) => [...prevState.slice(0, prevState.length - 1), task]);
     setIsInputTitleVisible(false);
   };
 
   const updateDescription = async (descriptionValue: string) => {
-    const task = await updateTask(boardId, taskName, columnId, taskProp.id, descriptionValue);
+    const task = await updateTask(
+      boardId,
+      columnId,
+      taskProp.id,
+      undefined,
+      undefined,
+      undefined,
+      descriptionValue,
+    );
     updateColumn((prevState) => {
       const taskIndex = prevState.findIndex((c) => c.id === taskProp.id);
       if (taskIndex === -1) {
@@ -108,7 +117,7 @@ const Task: React.FC<ITaskProps> = ({
 
   return (
     <>
-      <Draggable key={taskProp.id} draggableId={taskProp.id} index={index}>
+      <Draggable key={taskProp.id} draggableId={taskProp.id} index={taskProp.order}>
         {(provided) => (
           <div
             ref={provided.innerRef}
@@ -168,7 +177,7 @@ const Task: React.FC<ITaskProps> = ({
             <ProjectOutlined className="icon-task-title" />
             <h4 title={taskName} contentEditable="true">{taskName}</h4>
           </div>
-    )}
+        )}
         visible={isModalVisible}
         afterClose={changeModalTaskName}
         onCancel={() => {

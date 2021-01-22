@@ -14,11 +14,11 @@ import { addColumn, deleteColumn } from '../../service/Service';
 interface IColumnProps {
   boardId: string
   columnProp: ColumnModel
-  index: number
   updateBoard: Dispatch<SetStateAction<ColumnModel[]>>
 }
 
 export interface ColumnModel {
+  order: number
   id?: string
   title?: string
   tasks?: TaskModel[]
@@ -27,7 +27,6 @@ export interface ColumnModel {
 const Column: React.FC<IColumnProps> = ({
   boardId,
   columnProp,
-  index,
   updateBoard,
 }) => {
   const [columnId, setColumnId] = useState(columnProp.id || '');
@@ -60,13 +59,15 @@ const Column: React.FC<IColumnProps> = ({
   }, [tasks]);
 
   const handleCheck = async () => {
-    const column = await addColumn(boardId, columnName);
+    const column = await addColumn(boardId, columnName, columnProp.order);
     column.title = columnName;
     updateBoard((prevState) => [...prevState.slice(0, prevState.length - 1), column]);
     setColumnId(column.id);
     setIsInputTitleVisible(false);
   };
 
+  console.log(tasks);
+  const taskCards = tasks.map((task) => (
   const removeColumn = async () => {
     await deleteColumn(boardId, columnProp.id, columnProp.title);
 
@@ -93,12 +94,11 @@ const Column: React.FC<IColumnProps> = ({
     </Menu>
   );
 
-  const taskCards = tasks.map((task, index) => (
+  const taskCards = tasks.map((task) => (
     <Task
       boardId={boardId}
       columnId={columnId}
       taskProp={task}
-      index={index}
       updateColumn={setTasks}
       onClick={() => console.log('click')}
     />
@@ -106,7 +106,7 @@ const Column: React.FC<IColumnProps> = ({
 
   return (
     <>
-      <Draggable key={columnId} draggableId={columnId} index={index}>
+      <Draggable key={columnId} draggableId={columnId} index={columnProp.order}>
         {(provided) => (
           <div
             ref={provided.innerRef}
@@ -151,7 +151,7 @@ const Column: React.FC<IColumnProps> = ({
                 )}
               </Droppable>
               <Button
-                onClick={() => setTasks([...tasks, { id: '123' }])}
+                onClick={() => setTasks([...tasks, { id: '123', order: tasks.length }])}
                 icon={<PlusOutlined />}
                 style={{ width: '100%', textAlign: 'left' }}
               >

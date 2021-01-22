@@ -9,7 +9,7 @@ import { Button, Menu, Dropdown } from 'antd';
 import Column, { ColumnModel } from '../../components/column/Column';
 import './board.scss';
 import { IState } from '../../store/rootReducer';
-import { getBoard, deleteBoard } from '../../service/Service';
+import { getBoard, updateColumn, updateTask, deleteBoard } from '../../service/Service';
 import { TaskModel } from '../../components/task/Task';
 
 interface IBoardProps {
@@ -79,7 +79,13 @@ const Board: React.FC = () => {
   };
 
   const onDragEnd = (result: DropResult) => {
-    const { source, destination, type } = result;
+    console.log(result);
+    const {
+      source,
+      destination,
+      type,
+      draggableId,
+    } = result;
 
     if (!destination) {
       return;
@@ -87,11 +93,46 @@ const Board: React.FC = () => {
 
     if (type === 'column') {
       setColumns(reorderColumns(source.index, destination.index, columns));
+      const updateColumnFunc = async () => {
+        const updatedColumn = await updateColumn(id, draggableId, destination.index);
+        console.log(updatedColumn);
+
+        const board = await getBoard(id);
+        setColumns(board.columns);
+      };
+
+      updateColumnFunc();
       return;
     }
 
     const sInd = columns.findIndex((c) => c.id === source.droppableId);
     const dInd = columns.findIndex((c) => c.id === destination.droppableId);
+
+    const updateTaskFunc = async () => {
+      if (destination.droppableId === source.droppableId) {
+        const updatedTask = await updateTask(
+          id,
+          source.droppableId,
+          draggableId,
+          destination.index,
+        );
+        console.log(updatedTask);
+      } else {
+        const updatedTask = await updateTask(
+          id,
+          source.droppableId,
+          draggableId,
+          destination.index,
+          destination.droppableId,
+        );
+        console.log(updatedTask);
+      }
+
+      const board = await getBoard(id);
+      setColumns(board.columns);
+    };
+
+    updateTaskFunc();
 
     if (sInd === dInd) {
       const items = reorder(source.index, destination.index, columns[sInd].tasks);
@@ -119,11 +160,10 @@ const Board: React.FC = () => {
     // RENAME BOARD
   };
 
-  const columnCards = columns.map((column, index) => (
+  const columnCards = columns.map((column) => (
     <Column
       boardId={id}
       columnProp={column}
-      index={index}
       updateBoard={setColumns}
     />
   ));
@@ -161,7 +201,7 @@ const Board: React.FC = () => {
             )}
           </Droppable>
           <Button
-            onClick={() => setColumns([...columns, {}])}
+            onClick={() => setColumns([...columns, { order: columns.length }])}
             icon={<PlusOutlined />}
           >
             Добавить список

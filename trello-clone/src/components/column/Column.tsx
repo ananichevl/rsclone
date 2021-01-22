@@ -9,7 +9,7 @@ import { Draggable, Droppable } from 'react-beautiful-dnd';
 import SimpleInput from '../simpleInput/SimpleInput';
 import Task, { TaskModel } from '../task/Task';
 import './column.scss';
-import { addColumn, deleteColumn } from '../../service/Service';
+import { addColumn, deleteColumn, getBoard } from '../../service/Service';
 
 interface IColumnProps {
   boardId: string
@@ -67,20 +67,11 @@ const Column: React.FC<IColumnProps> = ({
   };
 
   console.log(tasks);
-  const taskCards = tasks.map((task) => (
   const removeColumn = async () => {
     await deleteColumn(boardId, columnProp.id, columnProp.title);
+    const board = await getBoard(boardId);
 
-    updateBoard((prevState) => {
-      const columnIndex = prevState.findIndex((c) => c.id === columnProp.id);
-      if (columnIndex === -1) {
-        return prevState;
-      }
-
-      const forDeletion = [...prevState].splice(columnIndex, 1);
-      const newState = prevState.filter((item) => !forDeletion.includes(item));
-      return newState;
-    });
+    updateBoard(board.columns);
   };
 
   const changeColumnName = () => {

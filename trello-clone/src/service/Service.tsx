@@ -1,7 +1,7 @@
 import { BoardModel } from '../pages/board/Board';
 
 const headers = { 'Content-Type': 'application/json' };
-const server = 'http://localhost:4000';
+const server = 'https://trello-clone-bh.herokuapp.com';
 
 export async function createBoard(title: string): Promise<BoardModel | any> {
   const body = {
@@ -116,6 +116,24 @@ export async function getBoard(id: string): Promise<any> {
   return Promise.resolve('error');
 }
 
+export async function getColumn(boardId: string, columnId: string): Promise<any> {
+  const requestOptions = {
+    headers,
+    method: 'GET',
+  };
+
+  try {
+    const response = await fetch(`${server}/boards/${boardId}/columns/${columnId}`, requestOptions);
+    if (response.ok) {
+      return await response.json();
+    }
+  } catch (e) {
+    return e;
+  }
+
+  return Promise.resolve('error');
+}
+
 export async function updateTask(
   boardId: string,
   columnId: string,
@@ -180,23 +198,15 @@ export async function updateColumn(
 }
 
 export async function deleteTask(
-  boardId: string, title: string, columnId: string, taskId: string,
+  boardId: string, columnId: string, taskId: string,
 ): Promise<any> {
-  const body = {
-    title,
-    order: 0,
-    boardId,
-    columnId,
-  };
-
   const requestOptions = {
     headers,
     method: 'DELETE',
-    body: JSON.stringify(body),
   };
 
   try {
-    const response = await fetch(`${server}/boards/${boardId}/tasks/${taskId}`, requestOptions);
+    const response = await fetch(`${server}/boards/${boardId}/columns/${columnId}/tasks/${taskId}`, requestOptions);
     if (response.ok) {
       return await response.json();
     }

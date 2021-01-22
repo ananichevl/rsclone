@@ -9,7 +9,12 @@ import { Button, Menu, Dropdown } from 'antd';
 import Column, { ColumnModel } from '../../components/column/Column';
 import './board.scss';
 import { IState } from '../../store/rootReducer';
-import { getBoard, updateColumn, updateTask, deleteBoard } from '../../service/Service';
+import {
+  getBoard,
+  updateColumn,
+  updateTask,
+  deleteBoard,
+} from '../../service/Service';
 import { TaskModel } from '../../components/task/Task';
 
 interface IBoardProps {

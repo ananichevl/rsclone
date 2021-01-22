@@ -12,7 +12,12 @@ import {
 } from '@ant-design/icons';
 import { Draggable } from 'react-beautiful-dnd';
 import SimpleInput from '../simpleInput/SimpleInput';
-import { createTask, updateTask, deleteTask } from '../../service/Service';
+import {
+  createTask,
+  updateTask,
+  deleteTask,
+  getColumn,
+} from '../../service/Service';
 
 const { TextArea } = Input;
 
@@ -95,17 +100,9 @@ const Task: React.FC<ITaskProps> = ({
   };
 
   const removeTask = async () => {
-    await deleteTask(boardId, taskName, columnId, taskProp.id);
-    updateColumn((prevState) => {
-      const taskIndex = prevState.findIndex((c) => c.id === taskProp.id);
-      if (taskIndex === -1) {
-        return prevState;
-      }
-
-      const forDeletion = [...prevState].splice(taskIndex, 1);
-      const newState = prevState.filter((item) => !forDeletion.includes(item));
-      return newState;
-    });
+    await deleteTask(boardId, columnId, taskProp.id);
+    const column = await getColumn(boardId, columnId);
+    updateColumn(column.tasks);
   };
 
   const menu = (

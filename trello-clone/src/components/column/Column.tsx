@@ -1,13 +1,15 @@
 import React, {
   useState, useEffect, Dispatch, SetStateAction,
 } from 'react';
-import { Card, Button } from 'antd';
-import { PlusOutlined, CheckOutlined } from '@ant-design/icons';
+import {
+  Card, Button, Dropdown, Menu,
+} from 'antd';
+import { PlusOutlined, CheckOutlined, EllipsisOutlined } from '@ant-design/icons';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import SimpleInput from '../simpleInput/SimpleInput';
 import Task, { TaskModel } from '../task/Task';
 import './column.scss';
-import { addColumn } from '../../service/Service';
+import { addColumn, deleteColumn } from '../../service/Service';
 
 interface IColumnProps {
   boardId: string
@@ -65,6 +67,32 @@ const Column: React.FC<IColumnProps> = ({
     setIsInputTitleVisible(false);
   };
 
+  const removeColumn = async () => {
+    await deleteColumn(boardId, columnProp.id, columnProp.title);
+
+    updateBoard((prevState) => {
+      const columnIndex = prevState.findIndex((c) => c.id === columnProp.id);
+      if (columnIndex === -1) {
+        return prevState;
+      }
+
+      const forDeletion = [...prevState].splice(columnIndex, 1);
+      const newState = prevState.filter((item) => !forDeletion.includes(item));
+      return newState;
+    });
+  };
+
+  const changeColumnName = () => {
+    // RENAME COLUMN
+  };
+
+  const menu = (
+    <Menu>
+      <Menu.Item key="1" onClick={removeColumn}>Удалить колонку</Menu.Item>
+      <Menu.Item key="2" onClick={changeColumnName}>Переименовать</Menu.Item>
+    </Menu>
+  );
+
   const taskCards = tasks.map((task, index) => (
     <Task
       boardId={boardId}
@@ -75,6 +103,7 @@ const Column: React.FC<IColumnProps> = ({
       onClick={() => console.log('click')}
     />
   ));
+
   return (
     <>
       <Draggable key={columnId} draggableId={columnId} index={index}>
@@ -88,7 +117,7 @@ const Column: React.FC<IColumnProps> = ({
               className="board-column"
               title={(
                 <div {...provided.dragHandleProps}>
-                  <div className="board-column__title" style={{ display: isInputTitleVisible ? 'flex' : 'none' }}>
+                  <div className="board-column__input-title" style={{ display: isInputTitleVisible ? 'flex' : 'none' }}>
                     <div>
                       <SimpleInput onChange={(value) => setColumnName(value)} placeholder="Добавить название" />
                     </div>
@@ -97,7 +126,15 @@ const Column: React.FC<IColumnProps> = ({
                       onClick={handleCheck}
                     />
                   </div>
-                  <div style={{ display: isInputTitleVisible ? 'none' : 'flex' }}>{columnName}</div>
+                  <div
+                    className="board-column__title"
+                    style={{ display: isInputTitleVisible ? 'none' : 'flex' }}
+                  >
+                    {columnName}
+                    <Dropdown overlay={menu} trigger={['click']}>
+                      <EllipsisOutlined className="options-btn" key="ellipsis" />
+                    </Dropdown>
+                  </div>
                 </div>
               )}
               bordered={false}

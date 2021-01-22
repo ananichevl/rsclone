@@ -9,20 +9,30 @@ const { Header, Content, Footer } = Layout;
 
 const App: React.FC = () => (
   <BrowserRouter>
-    <Layout style={{ height: '100vh' }}>
+    <Layout className="layout">
       <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
         <div className="logo" />
         <Navbar />
       </Header>
-      <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64 }}>
-        <div className="site-layout-background" style={{ padding: 24, minHeight: 380 }}>
+      <Content
+        className="site-layout"
+        style={{
+          padding: '0 50px', marginTop: 64,
+        }}
+      >
+        <div
+          className="site-layout-background"
+          style={{
+            padding: 24, minHeight: 380, backgroundAttachment: 'fixed',
+          }}
+        >
           <Switch>
             <Route component={Dashboard} path="/" exact />
             <Route component={Board} path="/board/:id" />
           </Switch>
         </div>
       </Content>
-      <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+      <Footer className="footer" style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
     </Layout>
   </BrowserRouter>
 );

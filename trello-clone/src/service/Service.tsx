@@ -139,3 +139,75 @@ export async function updateTask(
 
   return Promise.resolve('error');
 }
+
+export async function deleteTask(
+  boardId: string, title: string, columnId: string, taskId: string,
+): Promise<any> {
+  const body = {
+    title,
+    order: 0,
+    boardId,
+    columnId,
+  };
+
+  const requestOptions = {
+    headers,
+    method: 'DELETE',
+    body: JSON.stringify(body),
+  };
+
+  try {
+    const response = await fetch(`${server}/boards/${boardId}/tasks/${taskId}`, requestOptions);
+    if (response.ok) {
+      return await response.json();
+    }
+  } catch (e) {
+    return e;
+  }
+
+  return Promise.resolve('error');
+}
+
+export async function deleteColumn(
+  boardId: string, id: string | undefined, title: string | undefined,
+): Promise<any> {
+  const body = {
+    id,
+    title,
+  };
+
+  const requestOptions = {
+    headers,
+    method: 'DELETE',
+    body: JSON.stringify(body),
+  };
+
+  try {
+    const response = await fetch(`${server}/boards/${boardId}/columns/${id}`, requestOptions);
+    if (response.ok) {
+      return await response.json();
+    }
+  } catch (e) {
+    return e;
+  }
+
+  return Promise.resolve('error');
+}
+
+export async function deleteBoard(id: string): Promise<BoardModel | any> {
+  const requestOptions = {
+    headers,
+    method: 'DELETE',
+  };
+
+  try {
+    const response = await fetch(`${server}/boardsv2/${id}`, requestOptions);
+    if (response.ok) {
+      return await response.json();
+    }
+  } catch (e) {
+    return e;
+  }
+
+  return Promise.resolve('error');
+}

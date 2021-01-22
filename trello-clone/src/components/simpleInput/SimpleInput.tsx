@@ -4,9 +4,12 @@ import { Input } from 'antd';
 interface IInputProps {
   placeholder: string,
   onChange: (arg: string) => void
+  onBlur?: (arg: string) => void
 }
 
-const SimpleInput: React.FC<IInputProps> = ({ placeholder, onChange }) => {
+const SimpleInput: React.FC<IInputProps> = ({
+  placeholder, onChange, onBlur,
+}) => {
   const [value, setValue] = useState('');
 
   // example usage of UseEffect
@@ -23,6 +26,9 @@ const SimpleInput: React.FC<IInputProps> = ({ placeholder, onChange }) => {
         onChange={(e) => {
           setValue(e.target.value);
           onChange(e.target.value);
+        }}
+        onBlur={(e) => {
+          onBlur(e.target.value);
         }}
         value={value}
       />

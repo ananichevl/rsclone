@@ -1,5 +1,14 @@
-.board-column__title {
+.board-column__input-title {
   display: flex;
+}
+
+.board-column__title {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.options-btn {
+  cursor: pointer;
 }
 
 .icon-task-title {
@@ -13,4 +22,31 @@
   .icon-description {
     margin: .2rem .5rem 0 0;
   }
+}
+
+.board-column {
+  max-height: 70vh;
+  width: 200px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: .5rem;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1bb;
+  border-radius: 1rem;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgba(186, 203, 248, 0.555);
+  border-radius: 1rem;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(200, 213, 252, 0.555);
 }

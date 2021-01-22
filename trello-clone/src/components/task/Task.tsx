@@ -5,14 +5,14 @@ import React, {
   useState,
 } from 'react';
 import {
-  Button, Card, Modal, Input,
+  Button, Card, Modal, Input, Dropdown, Menu,
 } from 'antd';
 import {
   CheckOutlined, EditOutlined, AlignLeftOutlined, ProjectOutlined,
 } from '@ant-design/icons';
 import { Draggable } from 'react-beautiful-dnd';
 import SimpleInput from '../simpleInput/SimpleInput';
-import { createTask, updateTask } from '../../service/Service';
+import { createTask, updateTask, deleteTask } from '../../service/Service';
 
 const { TextArea } = Input;
 
@@ -62,7 +62,7 @@ const Task: React.FC<ITaskProps> = ({
       }
       const newState = [...prevState];
       newState[taskIndex] = task;
-      console.log(newState);
+
       return newState;
     });
   };
@@ -79,12 +79,32 @@ const Task: React.FC<ITaskProps> = ({
   const changeTaskName = () => {
     setTaskName(taskName);
     setIsInputTitleVisible(true);
-    setIsModalVisible(false);
   };
 
   const changeModalTaskName = () => {
     setTaskName(taskName);
   };
+
+  const removeTask = async () => {
+    await deleteTask(boardId, taskName, columnId, taskProp.id);
+    updateColumn((prevState) => {
+      const taskIndex = prevState.findIndex((c) => c.id === taskProp.id);
+      if (taskIndex === -1) {
+        return prevState;
+      }
+
+      const forDeletion = [...prevState].splice(taskIndex, 1);
+      const newState = prevState.filter((item) => !forDeletion.includes(item));
+      return newState;
+    });
+  };
+
+  const menu = (
+    <Menu>
+      <Menu.Item key="1" onClick={removeTask}>Удалить</Menu.Item>
+      <Menu.Item key="2" onClick={changeTaskName}>Редактировать</Menu.Item>
+    </Menu>
+  );
 
   return (
     <>
@@ -95,39 +115,50 @@ const Task: React.FC<ITaskProps> = ({
             {...provided.draggableProps}
             {...provided.dragHandleProps}
           >
-            <Card
-              type="inner"
-              style={{ marginBottom: 16 }}
-              hoverable
-            >
-              <div>
-                <div className="board-column__title" style={{ display: isInputTitleVisible ? 'flex' : 'none' }}>
-                  <div>
-                    <SimpleInput onChange={(value) => setTaskName(value)} placeholder="Добавить название" />
+            <Dropdown overlay={menu} trigger={['contextMenu']}>
+              <Card
+                type="inner"
+                style={{ marginBottom: 16 }}
+                hoverable
+              >
+                <div>
+                  <div className="board-column__title" style={{ display: isInputTitleVisible ? 'flex' : 'none' }}>
+                    <div>
+                      <SimpleInput
+                        onChange={(value) => setTaskName(value)}
+                        placeholder="Добавить название"
+                        onBlur={(value) => {
+                          setTaskName(value);
+                          if (value) {
+                            setIsInputTitleVisible(false);
+                          }
+                        }}
+                      />
+                    </div>
+                    <Button icon={<CheckOutlined />} onClick={handleCreateTask} />
                   </div>
-                  <Button icon={<CheckOutlined />} onClick={handleCreateTask} />
+                  <div
+                    role="button"
+                    onKeyUp={(e) => console.log(e)}
+                    onClick={(e) => {
+                      if (e.target === e.currentTarget) {
+                        showModal(taskName);
+                      }
+                    }}
+                    style={{ display: isInputTitleVisible ? 'none' : 'flex', outline: 'none' }}
+                    tabIndex={0}
+                  >
+                    {taskName}
+                    <Button
+                      icon={<EditOutlined style={{ width: '12px', height: '12px' }} />}
+                      onClick={changeTaskName}
+                      ghost
+                      style={{ marginLeft: 'auto' }}
+                    />
+                  </div>
                 </div>
-                <div
-                  role="button"
-                  onKeyUp={(e) => console.log(e)}
-                  onClick={(e) => {
-                    if (e.target === e.currentTarget) {
-                      showModal(taskName);
-                    }
-                  }}
-                  style={{ display: isInputTitleVisible ? 'none' : 'flex', outline: 'none' }}
-                  tabIndex={0}
-                >
-                  {taskName}
-                  <Button
-                    icon={<EditOutlined style={{ width: '12px', height: '12px' }} />}
-                    onClick={changeTaskName}
-                    ghost
-                    style={{ marginLeft: 'auto' }}
-                  />
-                </div>
-              </div>
-            </Card>
+              </Card>
+            </Dropdown>
           </div>
         )}
       </Draggable>

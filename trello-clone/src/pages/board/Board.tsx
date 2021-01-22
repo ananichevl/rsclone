@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import {
   DragDropContext, DraggableLocation, Droppable, DropResult,
 } from 'react-beautiful-dnd';
-import { PlusOutlined } from '@ant-design/icons';
-import { useParams } from 'react-router-dom';
+import { PlusOutlined, EllipsisOutlined } from '@ant-design/icons';
+import { useParams, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { Button } from 'antd';
+import { Button, Menu, Dropdown } from 'antd';
 import Column, { ColumnModel } from '../../components/column/Column';
 import './board.scss';
 import { IState } from '../../store/rootReducer';
-import { getBoard } from '../../service/Service';
+import { getBoard, deleteBoard } from '../../service/Service';
 import { TaskModel } from '../../components/task/Task';
 
 interface IBoardProps {
@@ -109,6 +109,16 @@ const Board: React.FC = () => {
     }
   };
 
+  const RemoveBoard = async () => {
+    await deleteBoard(id);
+    const history = useHistory();
+    history.push('/'); // Показать уведобление и перейти на стартовую страницу, надо доделать
+  };
+
+  const changeBoardName = () => {
+    // RENAME BOARD
+  };
+
   const columnCards = columns.map((column, index) => (
     <Column
       boardId={id}
@@ -118,9 +128,24 @@ const Board: React.FC = () => {
     />
   ));
 
+  const menu = (
+    <Menu>
+      <Menu.Item key="1" onClick={RemoveBoard}>Удалить доску</Menu.Item>
+      <Menu.Item key="2" onClick={changeBoardName}>Переименовать</Menu.Item>
+    </Menu>
+  );
+
   return (
     <>
-      <h2 title={boardName} contentEditable="true">{boardName}</h2>
+      <div className="board-title">
+        <h2 title={boardName} contentEditable="true">{boardName}</h2>
+        <Dropdown overlay={menu} trigger={['click']}>
+          <Button>
+            Меню
+            <EllipsisOutlined />
+          </Button>
+        </Dropdown>
+      </div>
       <div className="boardBody" style={{ display: 'flex' }}>
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable key={id} droppableId={id} direction="horizontal" type="column">

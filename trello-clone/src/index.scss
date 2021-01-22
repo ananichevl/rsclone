@@ -19,3 +19,14 @@ code {
   max-width: 100%;
   font-weight: 700;
 }
+
+.layout {
+  height: 100vh;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 35%;
+  z-index: 5;
+}

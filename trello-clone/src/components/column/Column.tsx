@@ -6,6 +6,7 @@ import {
 } from 'antd';
 import { PlusOutlined, CheckOutlined, EllipsisOutlined } from '@ant-design/icons';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
+import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import SimpleInput from '../simpleInput/SimpleInput';
 import Task, { TaskModel } from '../task/Task';
@@ -13,6 +14,8 @@ import './column.scss';
 import {
   addColumn, updateColumn, deleteColumn, getBoard,
 } from '../../service/Service';
+import { addColumn, deleteColumn, getBoard } from '../../service/Service';
+import { IBoard, IState } from '../../store/rootReducer';
 
 interface IColumnProps {
   boardId: string
@@ -32,22 +35,20 @@ const Column: React.FC<IColumnProps> = ({
   columnProp,
   updateBoard,
 }) => {
+  const board = useSelector<IState, IBoard>((state) => state.board);
+  const column = useSelector<IState, ColumnModel>(
+    (state) => state.board.columns?.filter((c) => c.id === columnProp.id)[0],
+  );
   const [columnId, setColumnId] = useState(columnProp.id || '');
   const [columnName, setColumnName] = useState<string>(columnProp.title || '');
   const [tasks, setTasks] = useState<TaskModel[]>(columnProp.tasks || []);
   const [isInputTitleVisible, setIsInputTitleVisible] = useState(!columnProp.title);
 
   useEffect(() => {
-    setTasks(columnProp.tasks || []);
-  }, [columnProp.tasks]);
-
-  useEffect(() => {
-    setColumnName(columnProp.title || '');
-  }, [columnProp.title]);
-
-  useEffect(() => {
-    setColumnId(columnProp.id || '');
-  }, [columnProp.id]);
+    setColumnName(column?.title || '');
+    setColumnId(column?.id || '');
+    setTasks(column?.tasks || []);
+  }, [board]);
 
   useEffect(() => {
     updateBoard((prevState) => {
@@ -118,7 +119,12 @@ const Column: React.FC<IColumnProps> = ({
                 <div {...provided.dragHandleProps}>
                   <div className="board-column__input-title" style={{ display: isInputTitleVisible ? 'flex' : 'none' }}>
                     <div>
-                      <SimpleInput onChange={(value) => setColumnName(value)} placeholder={t('placeholder_add_title')} />
+                      <SimpleInput
+                        onChange={(value) => setColumnName(value)}
+                        placeholder={t('placeholder_add_title')}
+                        inputValue={columnName}
+                        onBlur={(value) => console.log(value)}
+                      />
                     </div>
                     <Button
                       icon={<CheckOutlined />}

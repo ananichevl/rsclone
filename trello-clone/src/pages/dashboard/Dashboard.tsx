@@ -10,6 +10,7 @@ import { IState } from '../../store/rootReducer';
 import { createBoard, getBoards } from '../../service/Service';
 import { BoardModel } from '../board/Board';
 import './dashboard.scss';
+import createCreateBoardAction from '../../store/actions/createBoard';
 
 const Dashboard: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -34,10 +35,11 @@ const Dashboard: React.FC = () => {
 
   const history = useHistory();
 
-  const boardName = useSelector<IState, string>((state) => state.selectedBoardName);
+  const boardName = useSelector<IState, string>((state) => state.board.title);
 
   const handleOk = async () => {
     const board = await createBoard(boardName);
+    dispatch(createCreateBoardAction(board));
     history.push(`board/${board.id}`);
   };
 

@@ -2,22 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { Input } from 'antd';
 
 interface IInputProps {
-  placeholder: string,
-  onChange: (arg: string) => void
-  onBlur?: (arg: string) => void
+  placeholder: string;
+  onChange: (arg: string) => void;
+  onBlur: (arg?: string) => void;
+  inputValue?: string;
 }
 
 const SimpleInput: React.FC<IInputProps> = ({
-  placeholder, onChange, onBlur,
+  placeholder,
+  onChange,
+  onBlur,
+  inputValue,
 }) => {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(inputValue || '');
 
-  // example usage of UseEffect
   useEffect(() => {
-    if (value.length > 5) {
-      console.log(value);
-    }
-  }, [value]);
+    setValue(inputValue || '');
+  }, [inputValue]);
 
   return (
     <>

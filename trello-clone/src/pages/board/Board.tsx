@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {
-  DragDropContext, DraggableLocation, Droppable, DropResult,
+  DragDropContext,
+  DraggableLocation,
+  Droppable,
+  DropResult,
 } from 'react-beautiful-dnd';
 import { PlusOutlined, EllipsisOutlined } from '@ant-design/icons';
 import { useParams, useHistory } from 'react-router-dom';
@@ -22,14 +25,14 @@ interface IBoardProps {
 }
 
 interface MoveResult {
-  source: TaskModel[]
-  destination: TaskModel[]
+  source: TaskModel[];
+  destination: TaskModel[];
 }
 
 export interface BoardModel {
-  id: string
-  title: string
-  columns: ColumnModel[]
+  id: string;
+  title: string;
+  columns: ColumnModel[];
 }
 
 const Board: React.FC = () => {
@@ -47,7 +50,11 @@ const Board: React.FC = () => {
 
   const boardName = useSelector<IState, string>((state) => state.selectedBoardName) || title;
 
-  const reorder = (startIndex: number, endIndex: number, tasks?: TaskModel[]) => {
+  const reorder = (
+    startIndex: number,
+    endIndex: number,
+    tasks?: TaskModel[],
+  ) => {
     const result: TaskModel[] = tasks ? Array.from(tasks) : [];
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
@@ -55,7 +62,11 @@ const Board: React.FC = () => {
     return result;
   };
 
-  const reorderColumns = (startIndex: number, endIndex: number, columns?: ColumnModel[]) => {
+  const reorderColumns = (
+    startIndex: number,
+    endIndex: number,
+    columns?: ColumnModel[],
+  ) => {
     const result: ColumnModel[] = columns ? Array.from(columns) : [];
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
@@ -70,7 +81,9 @@ const Board: React.FC = () => {
     destinationTasks?: TaskModel[],
   ) => {
     const sourceClone: TaskModel[] = sourceTasks ? Array.from(sourceTasks) : [];
-    const destClone: TaskModel[] = destinationTasks ? Array.from(destinationTasks) : [];
+    const destClone: TaskModel[] = destinationTasks
+      ? Array.from(destinationTasks)
+      : [];
     const [removed] = sourceClone.splice(source.index, 1);
 
     destClone.splice(destination.index, 0, removed);
@@ -86,10 +99,7 @@ const Board: React.FC = () => {
   const onDragEnd = (result: DropResult) => {
     console.log(result);
     const {
-      source,
-      destination,
-      type,
-      draggableId,
+      source, destination, type, draggableId,
     } = result;
 
     if (!destination) {
@@ -99,7 +109,11 @@ const Board: React.FC = () => {
     if (type === 'column') {
       setColumns(reorderColumns(source.index, destination.index, columns));
       const updateColumnFunc = async () => {
-        const updatedColumn = await updateColumn(id, draggableId, destination.index);
+        const updatedColumn = await updateColumn(
+          id,
+          draggableId,
+          destination.index,
+        );
         console.log(updatedColumn);
 
         const board = await getBoard(id);
@@ -114,24 +128,16 @@ const Board: React.FC = () => {
     const dInd = columns.findIndex((c) => c.id === destination.droppableId);
 
     const updateTaskFunc = async () => {
-      if (destination.droppableId === source.droppableId) {
-        const updatedTask = await updateTask(
-          id,
-          source.droppableId,
-          draggableId,
-          destination.index,
-        );
-        console.log(updatedTask);
-      } else {
-        const updatedTask = await updateTask(
-          id,
-          source.droppableId,
-          draggableId,
-          destination.index,
-          destination.droppableId,
-        );
-        console.log(updatedTask);
-      }
+      const updatedTask = await updateTask(
+        id,
+        source.droppableId,
+        draggableId,
+        destination.index,
+        destination.droppableId === source.droppableId
+          ? undefined
+          : destination.droppableId,
+      );
+      console.log(updatedTask);
 
       const board = await getBoard(id);
       setColumns(board.columns);
@@ -140,13 +146,22 @@ const Board: React.FC = () => {
     updateTaskFunc();
 
     if (sInd === dInd) {
-      const items = reorder(source.index, destination.index, columns[sInd].tasks);
+      const items = reorder(
+        source.index,
+        destination.index,
+        columns[sInd].tasks,
+      );
       const newState = [...columns];
 
       newState[sInd].tasks = items;
       setColumns(newState);
     } else {
-      const res = move(source, destination, columns[sInd].tasks, columns[dInd].tasks);
+      const res = move(
+        source,
+        destination,
+        columns[sInd].tasks,
+        columns[dInd].tasks,
+      );
       const newState = [...columns];
       newState[sInd].tasks = res.source;
       newState[dInd].tasks = res.destination;
@@ -166,24 +181,26 @@ const Board: React.FC = () => {
   };
 
   const columnCards = columns.map((column) => (
-    <Column
-      boardId={id}
-      columnProp={column}
-      updateBoard={setColumns}
-    />
+    <Column boardId={id} columnProp={column} updateBoard={setColumns} />
   ));
 
   const menu = (
     <Menu>
-      <Menu.Item key="1" onClick={RemoveBoard}>Удалить доску</Menu.Item>
-      <Menu.Item key="2" onClick={changeBoardName}>Переименовать</Menu.Item>
+      <Menu.Item key="1" onClick={RemoveBoard}>
+        Удалить доску
+      </Menu.Item>
+      <Menu.Item key="2" onClick={changeBoardName}>
+        Переименовать
+      </Menu.Item>
     </Menu>
   );
 
   return (
     <>
       <div className="board-title">
-        <h2 title={boardName} contentEditable="true">{boardName}</h2>
+        <h2 title={boardName} contentEditable="true">
+          {boardName}
+        </h2>
         <Dropdown overlay={menu} trigger={['click']}>
           <Button>
             Меню
@@ -193,7 +210,12 @@ const Board: React.FC = () => {
       </div>
       <div className="boardBody" style={{ display: 'flex' }}>
         <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable key={id} droppableId={id} direction="horizontal" type="column">
+          <Droppable
+            key={id}
+            droppableId={id}
+            direction="horizontal"
+            type="column"
+          >
             {(provided) => (
               <div
                 style={{ display: 'flex' }}

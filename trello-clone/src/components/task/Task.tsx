@@ -53,9 +53,30 @@ const Task: React.FC<ITaskProps> = ({
   }, [taskProp.description]);
 
   const handleCreateTask = async () => {
-    console.log(taskProp);
-    const task = await createTask(boardId, columnId, taskProp.order, taskName);
-    updateColumn((prevState) => [...prevState.slice(0, prevState.length - 1), task]);
+    if (taskProp.id !== '123') {
+      const task = await updateTask(
+        boardId,
+        columnId,
+        taskProp.id,
+        undefined,
+        undefined,
+        taskName,
+        undefined,
+      );
+      updateColumn((prevState) => {
+        const taskIndex = prevState.findIndex((c) => c.id === taskProp.id);
+        if (taskIndex === -1) {
+          return prevState;
+        }
+        const newState = [...prevState];
+        newState[taskIndex] = task;
+        return newState;
+      });
+    } else {
+      const task = await createTask(boardId, columnId, taskProp.order, taskName);
+      updateColumn((prevState) => [...prevState.slice(0, prevState.length - 1), task]);
+    }
+
     setIsInputTitleVisible(false);
   };
 
@@ -139,6 +160,7 @@ const Task: React.FC<ITaskProps> = ({
                             setIsInputTitleVisible(false);
                           }
                         }}
+                        inputValue={taskName}
                       />
                     </div>
                     <Button icon={<CheckOutlined />} onClick={handleCreateTask} />

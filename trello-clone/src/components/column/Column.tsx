@@ -60,17 +60,13 @@ const Column: React.FC<IColumnProps> = ({
 
   const handleCheck = async () => {
     const column = await addColumn(boardId, columnName, columnProp.order);
-    column.title = columnName;
     updateBoard((prevState) => [...prevState.slice(0, prevState.length - 1), column]);
-    setColumnId(column.id);
     setIsInputTitleVisible(false);
   };
 
-  console.log(tasks);
   const removeColumn = async () => {
     await deleteColumn(boardId, columnProp.id, columnProp.title);
     const board = await getBoard(boardId);
-
     updateBoard(board.columns);
   };
 

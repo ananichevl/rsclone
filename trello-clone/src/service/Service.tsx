@@ -1,7 +1,7 @@
 import { BoardModel } from '../pages/board/Board';
 
 const headers = { 'Content-Type': 'application/json' };
-const server = 'https://trello-clone-bh.herokuapp.com';
+const server = 'http://localhost:4000';
 
 export async function createBoard(title: string): Promise<BoardModel | any> {
   const body = {

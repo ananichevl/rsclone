@@ -7,14 +7,14 @@ import {
 } from 'react-beautiful-dnd';
 import { PlusOutlined, EllipsisOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { useParams, useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Button, Menu, Dropdown, Modal,
 } from 'antd';
 import { useTranslation } from 'react-i18next';
 import Column, { ColumnModel } from '../../components/column/Column';
 import './board.scss';
-import { IState } from '../../store/rootReducer';
+import { IBoard, IState } from '../../store/rootReducer';
 import {
   getBoard,
   updateColumn,
@@ -22,6 +22,9 @@ import {
   deleteBoard,
 } from '../../service/Service';
 import { TaskModel } from '../../components/task/Task';
+import createGetBoardAction from '../../store/actions/getBoard';
+import createReorderColumnsAction from '../../store/actions/reorderColumns';
+import createReorderTasksAction from '../../store/actions/reorderTasks';
 
 const { confirm } = Modal;
 
@@ -41,19 +44,27 @@ export interface BoardModel {
 }
 
 const Board: React.FC = () => {
-  const [title, setTitle] = useState('');
-  const [columns, setColumns] = useState<ColumnModel[]>([]);
+  const dispatch = useDispatch();
+  const board = useSelector<IState, IBoard>((state) => state.board);
+
+  const [title, setTitle] = useState(board.title);
+  const [columns, setColumns] = useState<ColumnModel[]>(board.columns);
 
   const { id } = useParams<IBoardProps>();
+
   useEffect(() => {
-    (async function loadBoard() {
+    const loadBoard = async () => {
       const board = await getBoard(id);
-      setTitle(board.title);
-      setColumns(board.columns);
-    }());
+      dispatch(createGetBoardAction(board));
+    };
+
+    loadBoard();
   }, []);
 
-  const boardName = useSelector<IState, string>((state) => state.selectedBoardName) || title;
+  useEffect(() => {
+    setTitle(board.title);
+    setColumns(board.columns);
+  }, [board]);
 
   const reorder = (
     startIndex: number,
@@ -112,7 +123,9 @@ const Board: React.FC = () => {
     }
 
     if (type === 'column') {
-      setColumns(reorderColumns(source.index, destination.index, columns));
+      dispatch(
+        createReorderColumnsAction(reorderColumns(source.index, destination.index, columns)),
+      );
       const updateColumnFunc = async () => {
         const updatedColumn = await updateColumn(
           id,
@@ -145,7 +158,7 @@ const Board: React.FC = () => {
       console.log(updatedTask);
 
       const board = await getBoard(id);
-      setColumns(board.columns);
+      dispatch(createGetBoardAction(board.columns));
     };
 
     updateTaskFunc();
@@ -159,7 +172,7 @@ const Board: React.FC = () => {
       const newState = [...columns];
 
       newState[sInd].tasks = items;
-      setColumns(newState);
+      dispatch(createReorderTasksAction(newState));
     } else {
       const res = move(
         source,
@@ -171,7 +184,7 @@ const Board: React.FC = () => {
       newState[sInd].tasks = res.source;
       newState[dInd].tasks = res.destination;
 
-      setColumns(newState);
+      dispatch(createReorderTasksAction(newState));
     }
   };
 
@@ -219,8 +232,8 @@ const Board: React.FC = () => {
   return (
     <>
       <div className="board-title">
-        <h2 title={boardName}>
-          {boardName}
+        <h2 title={title}>
+          {title}
         </h2>
         <Dropdown overlay={menu} trigger={['click']}>
           <Button>

@@ -12,6 +12,7 @@ import {
 } from '@ant-design/icons';
 import { Draggable } from 'react-beautiful-dnd';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import SimpleInput from '../simpleInput/SimpleInput';
 import {
   createTask,
@@ -19,6 +20,7 @@ import {
   deleteTask,
   getColumn,
 } from '../../service/Service';
+import { IBoard, IState } from '../../store/rootReducer';
 
 const { TextArea } = Input;
 
@@ -40,14 +42,19 @@ export interface TaskModel {
 const Task: React.FC<ITaskProps> = ({
   boardId, columnId, taskProp, updateColumn,
 }) => {
+  const board = useSelector<IState, IBoard>((state) => state.board);
+  const task = useSelector<IState, TaskModel>(
+    (state) => state.board.columns?.filter((c) => c.id === columnId)[0]
+      .tasks?.filter((t) => t.id === taskProp.id)[0] || { id: '123', order: 1000 },
+  );
   const [taskName, setTaskName] = useState<string>((taskProp && taskProp.title) || '');
   const [isInputTitleVisible, setIsInputTitleVisible] = useState(!taskProp.title);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isTextAreaVisible, setIsTextAreaVisible] = useState(!taskProp.description);
 
   useEffect(() => {
-    setTaskName(taskProp.title || '');
-  }, [taskProp.title]);
+    setTaskName(task?.title || '');
+  }, [board]);
 
   useEffect(() => {
     setIsTextAreaVisible(!taskProp.description);
@@ -174,8 +181,8 @@ const Task: React.FC<ITaskProps> = ({
                         onChange={(value) => setTaskName(value)}
                         placeholder={t('placeholder_add_title')}
                         onBlur={(value) => {
-                          setTaskName(value);
                           if (value) {
+                            setTaskName(value);
                             setIsInputTitleVisible(false);
                           }
                         }}

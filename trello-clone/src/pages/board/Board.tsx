@@ -5,10 +5,12 @@ import {
   Droppable,
   DropResult,
 } from 'react-beautiful-dnd';
-import { PlusOutlined, EllipsisOutlined } from '@ant-design/icons';
+import { PlusOutlined, EllipsisOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { useParams, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { Button, Menu, Dropdown } from 'antd';
+import {
+  Button, Menu, Dropdown, Modal,
+} from 'antd';
 import Column, { ColumnModel } from '../../components/column/Column';
 import './board.scss';
 import { IState } from '../../store/rootReducer';
@@ -19,6 +21,8 @@ import {
   deleteBoard,
 } from '../../service/Service';
 import { TaskModel } from '../../components/task/Task';
+
+const { confirm } = Modal;
 
 interface IBoardProps {
   id: string;
@@ -170,10 +174,24 @@ const Board: React.FC = () => {
     }
   };
 
+  const history = useHistory();
+
   const RemoveBoard = async () => {
     await deleteBoard(id);
-    const history = useHistory();
-    history.push('/'); // Показать уведобление и перейти на стартовую страницу, надо доделать
+    history.push('/');
+  };
+
+  const showConfirm = () => {
+    confirm({
+      title: 'Подтвердите дейтсвие',
+      icon: <ExclamationCircleOutlined />,
+      content: `Вы хотите удалить доску "${boardName}"?`,
+      okText: 'Удалить',
+      cancelText: 'Отмена',
+      onOk() {
+        RemoveBoard();
+      },
+    });
   };
 
   const changeBoardName = () => {
@@ -186,7 +204,7 @@ const Board: React.FC = () => {
 
   const menu = (
     <Menu>
-      <Menu.Item key="1" onClick={RemoveBoard}>
+      <Menu.Item key="1" onClick={showConfirm}>
         Удалить доску
       </Menu.Item>
       <Menu.Item key="2" onClick={changeBoardName}>
@@ -198,7 +216,7 @@ const Board: React.FC = () => {
   return (
     <>
       <div className="board-title">
-        <h2 title={boardName} contentEditable="true">
+        <h2 title={boardName}>
           {boardName}
         </h2>
         <Dropdown overlay={menu} trigger={['click']}>
@@ -228,8 +246,11 @@ const Board: React.FC = () => {
             )}
           </Droppable>
           <Button
-            onClick={() => setColumns([...columns, { order: columns.length }])}
+            onClick={() => {
+              setColumns([...columns, { order: columns.length }]);
+            }}
             icon={<PlusOutlined />}
+            style={{ marginRight: '3rem' }}
           >
             Добавить список
           </Button>

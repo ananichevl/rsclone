@@ -1,14 +1,16 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-
-import { Menu } from 'antd';
+import { HomeOutlined } from '@ant-design/icons';
+import './navbar.scss';
 
 const Navbar: React.FC = () => (
-  <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
-    <Menu.Item key="1">
-      <NavLink to="/">Дэшборд</NavLink>
-    </Menu.Item>
-  </Menu>
+  <div className="header">
+    <div className="menu-item">
+      <NavLink to="/">
+        <HomeOutlined style={{ fontSize: '16px', color: '#fff' }} />
+      </NavLink>
+    </div>
+  </div>
 );
 
 export default Navbar;

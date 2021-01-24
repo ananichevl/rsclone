@@ -7,6 +7,14 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: lightblue;
+  background-attachment: fixed;
+
+  /* Set the background image to no repeat */
+  background-repeat: no-repeat;
+
+  /* Scale the background image to be as large as possible */
+  background-size: cover;
 }
 
 code {
@@ -20,13 +28,32 @@ code {
   font-weight: 700;
 }
 
-.layout {
-  height: 100vh;
-}
-
 .footer {
+  z-index: 5;
   position: fixed;
   bottom: 0;
-  left: 35%;
-  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 2rem;
+  opacity: .7;
+}
+
+.ant-layout-footer {
+  padding: .5rem;
+}
+
+.site-layout-content {
+  height: 85vh;
+  background-color: transparent;
+}
+
+.ant-layout {
+  background-color: transparent;
+}
+
+.ant-row-rtl #components-layout-demo-top .logo {
+  float: right;
+  margin: 16px 0 16px 24px;
 }

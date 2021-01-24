@@ -5,9 +5,15 @@
 
 .boardBody {
     display: flex;
+    margin-top: 3rem;
+    overflow-x: auto;
 }
 
 .board-title {
+    z-index: 2;
+    position: fixed;
+    top: 4rem;
     display: flex;
     justify-content: space-between;
+    width: 92.6vw;
 }

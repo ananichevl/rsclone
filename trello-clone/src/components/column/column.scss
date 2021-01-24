@@ -25,10 +25,13 @@
 }
 
 .board-column {
-  max-height: 70vh;
-  width: 200px;
+  width: 12rem;
+}
+
+.column-body {
+  max-height: 65vh;
+  min-height: 1vh;
   overflow-y: auto;
-  box-sizing: border-box;
 }
 
 ::-webkit-scrollbar {

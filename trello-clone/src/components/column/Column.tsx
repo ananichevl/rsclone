@@ -131,6 +131,7 @@ const Column: React.FC<IColumnProps> = ({
                   <div
                     ref={provided.innerRef}
                     {...provided.droppableProps}
+                    className="column-body"
                   >
                     {taskCards}
                     {provided.placeholder}

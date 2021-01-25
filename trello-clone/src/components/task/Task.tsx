@@ -97,7 +97,6 @@ const Task: React.FC<ITaskProps> = ({
       }
       const newState = [...prevState];
       newState[taskIndex] = task;
-
       return newState;
     });
   };

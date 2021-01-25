@@ -9,7 +9,9 @@ import { Draggable, Droppable } from 'react-beautiful-dnd';
 import SimpleInput from '../simpleInput/SimpleInput';
 import Task, { TaskModel } from '../task/Task';
 import './column.scss';
-import { addColumn, deleteColumn, getBoard } from '../../service/Service';
+import {
+  addColumn, updateColumn, deleteColumn, getBoard,
+} from '../../service/Service';
 
 interface IColumnProps {
   boardId: string
@@ -59,8 +61,14 @@ const Column: React.FC<IColumnProps> = ({
   }, [tasks]);
 
   const handleCheck = async () => {
-    const column = await addColumn(boardId, columnName, columnProp.order);
-    updateBoard((prevState) => [...prevState.slice(0, prevState.length - 1), column]);
+    if (columnProp.id) {
+      await updateColumn(boardId, columnId, undefined, columnName);
+      const board = await getBoard(boardId);
+      updateBoard(board.columns);
+    } else {
+      const column = await addColumn(boardId, columnName, columnProp.order);
+      updateBoard((prevState) => [...prevState.slice(0, prevState.length - 1), column]);
+    }
     setIsInputTitleVisible(false);
   };
 
@@ -70,8 +78,9 @@ const Column: React.FC<IColumnProps> = ({
     updateBoard(board.columns);
   };
 
-  const changeColumnName = () => {
-    // RENAME COLUMN
+  const changeColumnName = async () => {
+    setColumnName(columnName);
+    setIsInputTitleVisible(true);
   };
 
   const menu = (

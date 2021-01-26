@@ -13,6 +13,7 @@ import './dashboard.scss';
 import createCreateBoardAction from '../../store/actions/createBoard';
 
 const Dashboard: React.FC = () => {
+  const history = useHistory();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [boards, setBoards] = useState<BoardModel[]>([]);
   const dispatch = useDispatch();
@@ -28,17 +29,21 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     const loadBoards = async () => {
       const loadedBoards = await getBoards();
+      if (loadedBoards.status && (loadedBoards.status === 401 || loadedBoards.status === 403)) {
+        history.push('/login');
+      }
       setBoards(loadedBoards);
     };
     loadBoards();
   }, []);
 
-  const history = useHistory();
-
   const boardName = useSelector<IState, string>((state) => state.board.title);
 
   const handleOk = async () => {
     const board = await createBoard(boardName);
+    if (board.status && (board.status === 401 || board.status === 403)) {
+      history.push('/login');
+    }
     dispatch(createCreateBoardAction(board));
     history.push(`board/${board.id}`);
   };

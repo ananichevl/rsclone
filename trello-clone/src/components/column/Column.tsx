@@ -8,6 +8,7 @@ import { PlusOutlined, CheckOutlined, EllipsisOutlined } from '@ant-design/icons
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import SimpleInput from '../simpleInput/SimpleInput';
 import Task, { TaskModel } from '../task/Task';
 import './column.scss';
@@ -33,6 +34,7 @@ const Column: React.FC<IColumnProps> = ({
   boardId,
   columnProp,
 }) => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const [columnId, setColumnId] = useState(columnProp.id || '');
   const [columnName, setColumnName] = useState<string>(columnProp.title || '');
@@ -47,19 +49,34 @@ const Column: React.FC<IColumnProps> = ({
 
   const handleCheck = async () => {
     if (columnProp.id) {
-      await updateColumn(boardId, columnId, undefined, columnName);
+      const column = await updateColumn(boardId, columnId, undefined, columnName);
+      if (column.status && (column.status === 401 || column.status === 403)) {
+        history.push('/login');
+      }
       const board = await getBoard(boardId);
+      if (board.status && (board.status === 401 || board.status === 403)) {
+        history.push('/login');
+      }
       dispatch(createGetBoardAction(board));
     } else {
       const column = await addColumn(boardId, columnName, columnProp.order);
+      if (column.status && (column.status === 401 || column.status === 403)) {
+        history.push('/login');
+      }
       dispatch(createAddColumnAction(column));
     }
     setIsInputTitleVisible(false);
   };
 
   const removeColumn = async () => {
-    await deleteColumn(boardId, columnProp.id, columnProp.title);
+    const column = await deleteColumn(boardId, columnProp.id, columnProp.title);
+    if (column.status && (column.status === 401 || column.status === 403)) {
+      history.push('/login');
+    }
     const board = await getBoard(boardId);
+    if (board.status && (board.status === 401 || board.status === 403)) {
+      history.push('/login');
+    }
     dispatch(createGetBoardAction(board));
   };
 

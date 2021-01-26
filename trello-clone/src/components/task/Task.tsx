@@ -11,6 +11,7 @@ import {
 import { Draggable } from 'react-beautiful-dnd';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import SimpleInput from '../simpleInput/SimpleInput';
 import {
   createTask,
@@ -41,6 +42,7 @@ export interface TaskModel {
 const Task: React.FC<ITaskProps> = ({
   boardId, columnId, taskProp,
 }) => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const [taskName, setTaskName] = useState<string>((taskProp && taskProp.title) || '');
   const [isInputTitleVisible, setIsInputTitleVisible] = useState(!taskProp.title);
@@ -57,7 +59,7 @@ const Task: React.FC<ITaskProps> = ({
 
   const handleCreateTask = async () => {
     if (taskProp.id !== '123') {
-      await updateTask(
+      const task = await updateTask(
         boardId,
         columnId,
         taskProp.id,
@@ -66,10 +68,19 @@ const Task: React.FC<ITaskProps> = ({
         taskName,
         undefined,
       );
+      if (task.status && (task.status === 401 || task.status === 403)) {
+        history.push('/login');
+      }
       const board = await getBoard(boardId);
+      if (board.status && (board.status === 401 || board.status === 403)) {
+        history.push('/login');
+      }
       dispatch(createGetBoardAction(board));
     } else {
       const task = await createTask(boardId, columnId, taskProp.order, taskName);
+      if (task.status && (task.status === 401 || task.status === 403)) {
+        history.push('/login');
+      }
       dispatch(createAddTaskAction(task));
     }
 
@@ -77,7 +88,7 @@ const Task: React.FC<ITaskProps> = ({
   };
 
   const updateDescription = async (descriptionValue: string) => {
-    await updateTask(
+    const task = await updateTask(
       boardId,
       columnId,
       taskProp.id,
@@ -86,7 +97,13 @@ const Task: React.FC<ITaskProps> = ({
       undefined,
       descriptionValue,
     );
+    if (task.status && (task.status === 401 || task.status === 403)) {
+      history.push('/login');
+    }
     const board = await getBoard(boardId);
+    if (board.status && (board.status === 401 || board.status === 403)) {
+      history.push('/login');
+    }
     dispatch(createGetBoardAction(board));
   };
 
@@ -126,8 +143,14 @@ const Task: React.FC<ITaskProps> = ({
   };
 
   const removeTask = async () => {
-    await deleteTask(boardId, columnId, taskProp.id);
+    const task = await deleteTask(boardId, columnId, taskProp.id);
+    if (task.status && (task.status === 401 || task.status === 403)) {
+      history.push('/login');
+    }
     const board = await getBoard(boardId);
+    if (board.status && (board.status === 401 || board.status === 403)) {
+      history.push('/login');
+    }
     dispatch(createGetBoardAction(board));
   };
 

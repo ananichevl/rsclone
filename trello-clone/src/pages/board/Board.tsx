@@ -44,6 +44,7 @@ export interface BoardModel {
 }
 
 const Board: React.FC = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const board = useSelector<IState, IBoard>((state) => state.board);
 
@@ -55,6 +56,9 @@ const Board: React.FC = () => {
   useEffect(() => {
     const loadBoard = async () => {
       const board = await getBoard(id);
+      if (board.status && (board.status === 401 || board.status === 403)) {
+        history.push('/login');
+      }
       dispatch(createGetBoardAction(board));
     };
 
@@ -134,9 +138,15 @@ const Board: React.FC = () => {
           draggableId,
           destination.index,
         );
-        console.log(updatedColumn);
-
+        if (
+          updatedColumn.status && (updatedColumn.status === 401 || updatedColumn.status === 403)
+        ) {
+          history.push('/login');
+        }
         const board = await getBoard(id);
+        if (board.status && (board.status === 401 || board.status === 403)) {
+          history.push('/login');
+        }
         setColumns(board.columns);
       };
 
@@ -157,9 +167,13 @@ const Board: React.FC = () => {
           ? undefined
           : destination.droppableId,
       );
-      console.log(updatedTask);
-
+      if (updatedTask.status && (updatedTask.status === 401 || updatedTask.status === 403)) {
+        history.push('/login');
+      }
       const board = await getBoard(id);
+      if (board.status && (board.status === 401 || board.status === 403)) {
+        history.push('/login');
+      }
       dispatch(createGetBoardAction(board));
     };
 
@@ -190,10 +204,11 @@ const Board: React.FC = () => {
     }
   };
 
-  const history = useHistory();
-
   const RemoveBoard = async () => {
-    await deleteBoard(id);
+    const board = await deleteBoard(id);
+    if (board.status && (board.status === 401 || board.status === 403)) {
+      history.push('/login');
+    }
     history.push('/');
   };
 

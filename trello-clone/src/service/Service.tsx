@@ -1,7 +1,17 @@
 import { BoardModel } from '../pages/board/Board';
+import { UserModel } from '../pages/login/Login';
 
-const headers = { 'Content-Type': 'application/json' };
-const server = 'http://localhost:4000';
+const getCookie = (name: string) => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts) {
+    return parts.pop()?.split(';').shift();
+  }
+  return '';
+};
+
+const headers = { 'Content-Type': 'application/json', Authorization: `Bearer ${getCookie('Bearer')}` };
+const server = 'https://trello-clone-bh.herokuapp.com';
 
 export async function createBoard(title: string): Promise<BoardModel | any> {
   const body = {
@@ -19,11 +29,10 @@ export async function createBoard(title: string): Promise<BoardModel | any> {
     if (response.ok) {
       return await response.json();
     }
+    return response;
   } catch (e) {
     return e;
   }
-
-  return Promise.resolve('error');
 }
 
 export async function addColumn(id: string, title: string, order: number): Promise<any> {
@@ -43,11 +52,10 @@ export async function addColumn(id: string, title: string, order: number): Promi
     if (response.ok) {
       return await response.json();
     }
+    return response;
   } catch (e) {
     return e;
   }
-
-  return Promise.resolve('error');
 }
 
 export async function createTask(
@@ -73,11 +81,10 @@ export async function createTask(
     if (response.ok) {
       return await response.json();
     }
+    return response;
   } catch (e) {
     return e;
   }
-
-  return Promise.resolve('error');
 }
 
 export async function getBoards(): Promise<any> {
@@ -91,11 +98,10 @@ export async function getBoards(): Promise<any> {
     if (response.ok) {
       return await response.json();
     }
+    return response;
   } catch (e) {
     return e;
   }
-
-  return Promise.resolve('error');
 }
 
 export async function getBoard(id: string): Promise<any> {
@@ -109,11 +115,10 @@ export async function getBoard(id: string): Promise<any> {
     if (response.ok) {
       return await response.json();
     }
+    return response;
   } catch (e) {
     return e;
   }
-
-  return Promise.resolve('error');
 }
 
 export async function getColumn(boardId: string, columnId: string): Promise<any> {
@@ -127,11 +132,10 @@ export async function getColumn(boardId: string, columnId: string): Promise<any>
     if (response.ok) {
       return await response.json();
     }
+    return response;
   } catch (e) {
     return e;
   }
-
-  return Promise.resolve('error');
 }
 
 export async function updateTask(
@@ -161,11 +165,10 @@ export async function updateTask(
     if (response.ok) {
       return await response.json();
     }
+    return response;
   } catch (e) {
     return e;
   }
-
-  return Promise.resolve('error');
 }
 
 export async function updateColumn(
@@ -190,11 +193,10 @@ export async function updateColumn(
     if (response.ok) {
       return await response.json();
     }
+    return response;
   } catch (e) {
     return e;
   }
-
-  return Promise.resolve('error');
 }
 
 export async function deleteTask(
@@ -210,11 +212,10 @@ export async function deleteTask(
     if (response.ok) {
       return await response.json();
     }
+    return response;
   } catch (e) {
     return e;
   }
-
-  return Promise.resolve('error');
 }
 
 export async function deleteColumn(
@@ -236,11 +237,10 @@ export async function deleteColumn(
     if (response.ok) {
       return await response.json();
     }
+    return response;
   } catch (e) {
     return e;
   }
-
-  return Promise.resolve('error');
 }
 
 export async function deleteBoard(id: string): Promise<BoardModel | any> {
@@ -254,9 +254,31 @@ export async function deleteBoard(id: string): Promise<BoardModel | any> {
     if (response.ok) {
       return await response.json();
     }
+    return response;
   } catch (e) {
     return e;
   }
+}
 
-  return Promise.resolve('error');
+export async function loginUser(login: string, password: string): Promise<UserModel | any> {
+  const body = {
+    login,
+    password,
+  };
+
+  const requestOptions = {
+    headers,
+    method: 'POST',
+    body: JSON.stringify(body),
+  };
+
+  try {
+    const response = await fetch(`${server}/users`, requestOptions);
+    if (response.ok) {
+      return await response.json();
+    }
+    return response;
+  } catch (e) {
+    return e;
+  }
 }

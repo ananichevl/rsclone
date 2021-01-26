@@ -12,15 +12,16 @@ import {
 } from '@ant-design/icons';
 import { Draggable } from 'react-beautiful-dnd';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import SimpleInput from '../simpleInput/SimpleInput';
 import {
   createTask,
   updateTask,
   deleteTask,
-  getColumn,
+  getBoard,
 } from '../../service/Service';
-import { IBoard, IState } from '../../store/rootReducer';
+import createAddTaskAction from '../../store/actions/addTask';
+import createGetBoardAction from '../../store/actions/getBoard';
 
 const { TextArea } = Input;
 
@@ -37,24 +38,21 @@ export interface TaskModel {
   order: number
   title?: string
   description?: string
+  columnId?: string
 }
 
 const Task: React.FC<ITaskProps> = ({
   boardId, columnId, taskProp, updateColumn,
 }) => {
-  const board = useSelector<IState, IBoard>((state) => state.board);
-  const task = useSelector<IState, TaskModel>(
-    (state) => state.board.columns?.filter((c) => c.id === columnId)[0]
-      .tasks?.filter((t) => t.id === taskProp.id)[0] || { id: '123', order: 1000 },
-  );
+  const dispatch = useDispatch();
   const [taskName, setTaskName] = useState<string>((taskProp && taskProp.title) || '');
   const [isInputTitleVisible, setIsInputTitleVisible] = useState(!taskProp.title);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isTextAreaVisible, setIsTextAreaVisible] = useState(!taskProp.description);
 
   useEffect(() => {
-    setTaskName(task?.title || '');
-  }, [board]);
+    setTaskName(taskProp.title || '');
+  }, [taskProp]);
 
   useEffect(() => {
     setIsTextAreaVisible(!taskProp.description);
@@ -82,7 +80,7 @@ const Task: React.FC<ITaskProps> = ({
       });
     } else {
       const task = await createTask(boardId, columnId, taskProp.order, taskName);
-      updateColumn((prevState) => [...prevState.slice(0, prevState.length - 1), task]);
+      dispatch(createAddTaskAction(task));
     }
 
     setIsInputTitleVisible(false);
@@ -129,8 +127,8 @@ const Task: React.FC<ITaskProps> = ({
 
   const removeTask = async () => {
     await deleteTask(boardId, columnId, taskProp.id);
-    const column = await getColumn(boardId, columnId);
-    updateColumn(column.tasks);
+    const board = await getBoard(boardId);
+    dispatch(createGetBoardAction(board));
   };
 
   const { t } = useTranslation();

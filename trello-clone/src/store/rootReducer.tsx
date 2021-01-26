@@ -9,6 +9,10 @@ import { ReorderColumnsAction, ReorderColumnsActionType } from './actions/reorde
 import reorderColumnsReducer from './reducers/reorderColumnsReducer';
 import { ReorderTasksAction, ReorderTasksActionType } from './actions/reorderTasks';
 import reorderTasksReducer from './reducers/reorderTasksReducer';
+import { AddColumnAction, AddColumnActionType } from './actions/addColumn';
+import addColumnReducer from './reducers/addColumnReducer';
+import { AddTaskAction, AddTaskActionType } from './actions/addTask';
+import addTaskReducer from './reducers/addTaskReducer';
 
 export interface IBoard {
   id: string
@@ -33,7 +37,9 @@ type Actions =
   | CreateBoardAction
   | GetBoardAction
   | ReorderColumnsAction
-  | ReorderTasksAction;
+  | ReorderTasksAction
+  | AddColumnAction
+  | AddTaskAction;
 
 export default function rootReducer(state: IState = initialState, action: Actions): IState {
   switch (action.type) {
@@ -47,6 +53,10 @@ export default function rootReducer(state: IState = initialState, action: Action
       return reorderColumnsReducer(state, action);
     case ReorderTasksActionType:
       return reorderTasksReducer(state, action);
+    case AddColumnActionType:
+      return addColumnReducer(state, action);
+    case AddTaskActionType:
+      return addTaskReducer(state, action);
     default:
       return state;
   }

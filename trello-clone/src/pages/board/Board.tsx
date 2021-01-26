@@ -62,9 +62,11 @@ const Board: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    console.log('BOARD USEEFFECT');
+    console.log(board);
     setTitle(board.title);
     setColumns(board.columns);
-  }, [board]);
+  }, [board, board.columns, board.title]);
 
   const reorder = (
     startIndex: number,
@@ -158,7 +160,7 @@ const Board: React.FC = () => {
       console.log(updatedTask);
 
       const board = await getBoard(id);
-      dispatch(createGetBoardAction(board.columns));
+      dispatch(createGetBoardAction(board));
     };
 
     updateTaskFunc();
@@ -215,7 +217,7 @@ const Board: React.FC = () => {
   };
 
   const columnCards = columns.map((column) => (
-    <Column boardId={id} columnProp={column} updateBoard={setColumns} />
+    <Column boardId={id} columnProp={column} />
   ));
 
   const menu = (

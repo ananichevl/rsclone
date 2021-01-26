@@ -116,8 +116,25 @@ const Task: React.FC<ITaskProps> = ({
     setIsInputTitleVisible(true);
   };
 
-  const changeModalTaskName = () => {
-    setTaskName(taskName);
+  const changeModalTaskName = async () => {
+    const task = await updateTask(
+      boardId,
+      columnId,
+      taskProp.id,
+      undefined,
+      undefined,
+      taskName,
+      undefined,
+    );
+    updateColumn((prevState) => {
+      const taskIndex = prevState.findIndex((c) => c.id === taskProp.id);
+      if (taskIndex === -1) {
+        return prevState;
+      }
+      const newState = [...prevState];
+      newState[taskIndex] = task;
+      return newState;
+    });
   };
 
   const removeTask = async () => {
@@ -196,7 +213,35 @@ const Task: React.FC<ITaskProps> = ({
         title={(
           <div style={{ display: 'flex' }}>
             <ProjectOutlined className="icon-task-title" />
-            <h4 title={taskName} contentEditable="true">{taskName}</h4>
+            <div style={{ display: isInputTitleVisible ? 'flex' : 'none' }}>
+              <div>
+                <SimpleInput
+                  onChange={(value) => setTaskName(value)}
+                  placeholder={t('placeholder_add_title')}
+                  onBlur={(value) => {
+                    setTaskName(value);
+                    if (value) {
+                      setIsInputTitleVisible(false);
+                    }
+                  }}
+                  inputValue={taskName}
+                />
+              </div>
+              <Button icon={<CheckOutlined />} onClick={handleCreateTask} />
+            </div>
+            <div
+              style={{ display: isInputTitleVisible ? 'none' : 'flex', outline: 'none' }}
+              role="button"
+              onClick={(e) => {
+                if (e.target === e.currentTarget) {
+                  setIsInputTitleVisible(true);
+                }
+              }}
+              onKeyUp={(e) => console.log(e)}
+              tabIndex={0}
+            >
+              {taskName}
+            </div>
           </div>
         )}
         visible={isModalVisible}

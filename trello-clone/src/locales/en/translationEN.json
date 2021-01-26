@@ -1,0 +1,18 @@
+{
+  "boards": "Boards",
+  "create_board": "Create board",
+  "new_board": "New board",
+  "placeholder_add_title": "Add title",
+  "modal_create_btn": "Create",
+  "modal_cancel_btn": "Cancel",
+  "menu_btn": "Menu",
+  "menu_remove_board": "Remove board",
+  "change_title": "Rename",
+  "modal_title_remove_board": "Confirm your action",
+  "modal_question_remove_board": "Remove this board:",
+  "modal_remove_btn": "Remove",
+  "add_column_btn": "Add column",
+  "add_task_btn": "Add task",
+  "column_menu_remove_column": "Remove column",
+  "task_menu_remove_task": "Remove task"
+}

@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import {
   Button, Menu, Dropdown, Modal,
 } from 'antd';
+import { useTranslation } from 'react-i18next';
 import Column, { ColumnModel } from '../../components/column/Column';
 import './board.scss';
 import { IState } from '../../store/rootReducer';
@@ -181,13 +182,15 @@ const Board: React.FC = () => {
     history.push('/');
   };
 
+  const { t } = useTranslation();
+
   const showConfirm = () => {
     confirm({
-      title: 'Подтвердите дейтсвие',
+      title: t('modal_title_remove_board'),
       icon: <ExclamationCircleOutlined />,
-      content: `Вы хотите удалить доску "${boardName}"?`,
-      okText: 'Удалить',
-      cancelText: 'Отмена',
+      content: `${t('modal_question_remove_board')} ${boardName}?`,
+      okText: t('modal_remove_btn'),
+      cancelText: t('modal_cancel_btn'),
       onOk() {
         RemoveBoard();
       },
@@ -205,10 +208,10 @@ const Board: React.FC = () => {
   const menu = (
     <Menu>
       <Menu.Item key="1" onClick={showConfirm}>
-        Удалить доску
+        {t('menu_remove_board')}
       </Menu.Item>
       <Menu.Item key="2" onClick={changeBoardName}>
-        Переименовать
+        {t('change_title')}
       </Menu.Item>
     </Menu>
   );
@@ -221,7 +224,7 @@ const Board: React.FC = () => {
         </h2>
         <Dropdown overlay={menu} trigger={['click']}>
           <Button>
-            Меню
+            {t('menu_btn')}
             <EllipsisOutlined />
           </Button>
         </Dropdown>
@@ -252,7 +255,7 @@ const Board: React.FC = () => {
             icon={<PlusOutlined />}
             style={{ marginRight: '3rem' }}
           >
-            Добавить список
+            {t('add_column_btn')}
           </Button>
         </DragDropContext>
       </div>

@@ -1,0 +1,18 @@
+{
+  "boards": "Доски",
+  "create_board": "Створити доску",
+  "new_board": "Нова доска",
+  "placeholder_add_title": "Додати назву",
+  "modal_create_btn": "Створити",
+  "modal_cancel_btn": "Скасувати",
+  "menu_btn": "Меню",
+  "menu_remove_board": "Видалити доску",
+  "change_title": "Змінити назву",
+  "modal_title_remove_board": "Підтвердите дію",
+  "modal_question_remove_board": "Видалити цю доску:",
+  "modal_remove_btn": "Видалити",
+  "add_column_btn": "Додати колонку",
+  "add_task_btn": "Додати задачу",
+  "column_menu_remove_column": "Видалити колонку",
+  "task_menu_remove_task": "Видалити задачу"
+}

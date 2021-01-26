@@ -1,0 +1,18 @@
+{
+  "boards": "Доски",
+  "create_board": "Создать доску",
+  "new_board": "Новая доска",
+  "placeholder_add_title": "Добавить название",
+  "modal_create_btn": "Создать",
+  "modal_cancel_btn": "Отмена",
+  "menu_btn": "Меню",
+  "menu_remove_board": "Удалить доску",
+  "change_title": "Переименовать",
+  "modal_title_remove_board": "Подтвердите действие",
+  "modal_question_remove_board": "Удалить эту доску:",
+  "modal_remove_btn": "Удалить",
+  "add_column_btn": "Добавить колонку",
+  "add_task_btn": "Добавить задачу",
+  "column_menu_remove_column": "Удалить колонку",
+  "task_menu_remove_task": "Удалить задачу"
+}

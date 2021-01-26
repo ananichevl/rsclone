@@ -6,6 +6,7 @@ import {
 } from 'antd';
 import { PlusOutlined, CheckOutlined, EllipsisOutlined } from '@ant-design/icons';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
+import { useTranslation } from 'react-i18next';
 import SimpleInput from '../simpleInput/SimpleInput';
 import Task, { TaskModel } from '../task/Task';
 import './column.scss';
@@ -74,10 +75,12 @@ const Column: React.FC<IColumnProps> = ({
     // RENAME COLUMN
   };
 
+  const { t } = useTranslation();
+
   const menu = (
     <Menu>
-      <Menu.Item key="1" onClick={removeColumn}>Удалить колонку</Menu.Item>
-      <Menu.Item key="2" onClick={changeColumnName}>Переименовать</Menu.Item>
+      <Menu.Item key="1" onClick={removeColumn}>{t('column_menu_remove_column')}</Menu.Item>
+      <Menu.Item key="2" onClick={changeColumnName}>{t('change_title')}</Menu.Item>
     </Menu>
   );
 
@@ -106,7 +109,7 @@ const Column: React.FC<IColumnProps> = ({
                 <div {...provided.dragHandleProps}>
                   <div className="board-column__input-title" style={{ display: isInputTitleVisible ? 'flex' : 'none' }}>
                     <div>
-                      <SimpleInput onChange={(value) => setColumnName(value)} placeholder="Добавить название" />
+                      <SimpleInput onChange={(value) => setColumnName(value)} placeholder={t('placeholder_add_title')} />
                     </div>
                     <Button
                       icon={<CheckOutlined />}
@@ -143,7 +146,7 @@ const Column: React.FC<IColumnProps> = ({
                 icon={<PlusOutlined />}
                 style={{ width: '100%', textAlign: 'left' }}
               >
-                Добавить задачу
+                {t('add_task_btn')}
               </Button>
             </Card>
           </div>

@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { PlusOutlined, EditOutlined } from '@ant-design/icons';
 import { Modal, Card, Button } from 'antd';
+import { useTranslation } from 'react-i18next';
 import SimpleInput from '../../components/simpleInput/SimpleInput';
 import createSelectBoardAction from '../../store/actions/selectBoard';
 import { IState } from '../../store/rootReducer';
@@ -53,33 +54,35 @@ const Dashboard: React.FC = () => {
     </Card>
   ));
 
+  const { t } = useTranslation();
+
   return (
     <>
-      <h4>Доски</h4>
+      <h4>{t('boards')}</h4>
       <div className="boards-container">
         {boardCards}
         <Card className="create-board-btn" onClick={showModal} hoverable>
           <PlusOutlined className="icon" />
-          Создать доску
+          {t('create_board')}
         </Card>
       </div>
       <Modal
-        title="Новая доска"
+        title={t('new_board')}
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
         footer={[
           <Button key="back" onClick={handleCancel}>
-            Отмена
+            {t('modal_cancel_btn')}
           </Button>,
           <Button key="submit" type="primary" onClick={handleOk}>
-            Создать
+            {t('modal_create_btn')}
           </Button>,
         ]}
       >
         <SimpleInput
           onChange={(value) => dispatch(createSelectBoardAction(value))}
-          placeholder="Добавить название доски"
+          placeholder={t('placeholder_add_title')}
         />
       </Modal>
     </>

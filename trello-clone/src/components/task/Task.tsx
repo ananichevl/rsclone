@@ -11,6 +11,7 @@ import {
   CheckOutlined, EditOutlined, AlignLeftOutlined, ProjectOutlined,
 } from '@ant-design/icons';
 import { Draggable } from 'react-beautiful-dnd';
+import { useTranslation } from 'react-i18next';
 import SimpleInput from '../simpleInput/SimpleInput';
 import {
   createTask,
@@ -126,10 +127,12 @@ const Task: React.FC<ITaskProps> = ({
     updateColumn(column.tasks);
   };
 
+  const { t } = useTranslation();
+
   const menu = (
     <Menu>
-      <Menu.Item key="1" onClick={removeTask}>Удалить</Menu.Item>
-      <Menu.Item key="2" onClick={changeTaskName}>Редактировать</Menu.Item>
+      <Menu.Item key="1" onClick={removeTask}>{t('task_menu_remove_task')}</Menu.Item>
+      <Menu.Item key="2" onClick={changeTaskName}>{t('change_title')}</Menu.Item>
     </Menu>
   );
 
@@ -153,7 +156,7 @@ const Task: React.FC<ITaskProps> = ({
                     <div>
                       <SimpleInput
                         onChange={(value) => setTaskName(value)}
-                        placeholder="Добавить название"
+                        placeholder={t('placeholder_add_title')}
                         onBlur={(value) => {
                           setTaskName(value);
                           if (value) {

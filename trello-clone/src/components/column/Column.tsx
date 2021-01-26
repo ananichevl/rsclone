@@ -14,7 +14,6 @@ import './column.scss';
 import {
   addColumn, updateColumn, deleteColumn, getBoard,
 } from '../../service/Service';
-import { addColumn, deleteColumn, getBoard } from '../../service/Service';
 import createAddColumnAction from '../../store/actions/addColumn';
 import createGetBoardAction from '../../store/actions/getBoard';
 
@@ -50,7 +49,7 @@ const Column: React.FC<IColumnProps> = ({
     if (columnProp.id) {
       await updateColumn(boardId, columnId, undefined, columnName);
       const board = await getBoard(boardId);
-      updateBoard(board.columns);
+      dispatch(createGetBoardAction(board));
     } else {
       const column = await addColumn(boardId, columnName, columnProp.order);
       dispatch(createAddColumnAction(column));
@@ -83,7 +82,6 @@ const Column: React.FC<IColumnProps> = ({
       boardId={boardId}
       columnId={columnId}
       taskProp={task}
-      updateColumn={setTasks}
       onClick={() => console.log('click')}
     />
   ));

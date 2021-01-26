@@ -4,6 +4,7 @@ import { Layout } from 'antd';
 import Navbar from './components/navbar/Navbar';
 import Dashboard from './pages/dashboard/Dashboard';
 import Board from './pages/board/Board';
+import Login from './pages/login/Login';
 
 const { Header, Content, Footer } = Layout;
 
@@ -24,6 +25,7 @@ const App: React.FC = () => (
           className="site-layout-content"
         >
           <Switch>
+            <Route component={Login} path="/login" />
             <Route component={Dashboard} path="/" exact />
             <Route component={Board} path="/board/:id" />
           </Switch>

@@ -25,9 +25,7 @@ const Login: React.FC = () => {
   const onFinish = async () => {
     const user = await loginUser(login, password);
     document.cookie = `Bearer=${user.token}`;
-    setTimeout(() => {
-      history.push('/');
-    }, 1000);
+    history.push('/');
   };
 
   const onFinishFailed = () => console.log('fail');

@@ -10,7 +10,8 @@ const getCookie = (name: string) => {
   return '';
 };
 
-const headers = { 'Content-Type': 'application/json', Authorization: `Bearer ${getCookie('Bearer')}` };
+const headers = { 'Content-Type': 'application/json' };
+const addAuthorizationHeader = () => ({ ...headers, Authorization: `Bearer ${getCookie('Bearer')}` });
 const server = 'https://trello-clone-bh.herokuapp.com';
 
 export async function createBoard(title: string): Promise<BoardModel | any> {
@@ -19,7 +20,7 @@ export async function createBoard(title: string): Promise<BoardModel | any> {
   };
 
   const requestOptions = {
-    headers,
+    headers: addAuthorizationHeader(),
     method: 'POST',
     body: JSON.stringify(body),
   };
@@ -42,7 +43,7 @@ export async function addColumn(id: string, title: string, order: number): Promi
   };
 
   const requestOptions = {
-    headers,
+    headers: addAuthorizationHeader(),
     method: 'POST',
     body: JSON.stringify(body),
   };
@@ -71,7 +72,7 @@ export async function createTask(
   };
 
   const requestOptions = {
-    headers,
+    headers: addAuthorizationHeader(),
     method: 'POST',
     body: JSON.stringify(body),
   };
@@ -89,7 +90,7 @@ export async function createTask(
 
 export async function getBoards(): Promise<any> {
   const requestOptions = {
-    headers,
+    headers: addAuthorizationHeader(),
     method: 'GET',
   };
 
@@ -106,7 +107,7 @@ export async function getBoards(): Promise<any> {
 
 export async function getBoard(id: string): Promise<any> {
   const requestOptions = {
-    headers,
+    headers: addAuthorizationHeader(),
     method: 'GET',
   };
 
@@ -123,7 +124,7 @@ export async function getBoard(id: string): Promise<any> {
 
 export async function getColumn(boardId: string, columnId: string): Promise<any> {
   const requestOptions = {
-    headers,
+    headers: addAuthorizationHeader(),
     method: 'GET',
   };
 
@@ -155,7 +156,7 @@ export async function updateTask(
   };
 
   const requestOptions = {
-    headers,
+    headers: addAuthorizationHeader(),
     method: 'PUT',
     body: JSON.stringify(body),
   };
@@ -183,7 +184,7 @@ export async function updateColumn(
   };
 
   const requestOptions = {
-    headers,
+    headers: addAuthorizationHeader(),
     method: 'PUT',
     body: JSON.stringify(body),
   };
@@ -203,7 +204,7 @@ export async function deleteTask(
   boardId: string, columnId: string, taskId: string,
 ): Promise<any> {
   const requestOptions = {
-    headers,
+    headers: addAuthorizationHeader(),
     method: 'DELETE',
   };
 
@@ -227,7 +228,7 @@ export async function deleteColumn(
   };
 
   const requestOptions = {
-    headers,
+    headers: addAuthorizationHeader(),
     method: 'DELETE',
     body: JSON.stringify(body),
   };
@@ -245,7 +246,7 @@ export async function deleteColumn(
 
 export async function deleteBoard(id: string): Promise<BoardModel | any> {
   const requestOptions = {
-    headers,
+    headers: addAuthorizationHeader(),
     method: 'DELETE',
   };
 

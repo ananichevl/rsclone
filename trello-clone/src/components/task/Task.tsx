@@ -131,15 +131,14 @@ const Task: React.FC<ITaskProps> = ({
       taskName,
       undefined,
     );
-    updateColumn((prevState) => {
-      const taskIndex = prevState.findIndex((c) => c.id === taskProp.id);
-      if (taskIndex === -1) {
-        return prevState;
-      }
-      const newState = [...prevState];
-      newState[taskIndex] = task;
-      return newState;
-    });
+    if (task.status && (task.status === 401 || task.status === 403)) {
+      history.push('/login');
+    }
+    const board = await getBoard(boardId);
+    if (board.status && (board.status === 401 || board.status === 403)) {
+      history.push('/login');
+    }
+    dispatch(createGetBoardAction(board));
   };
 
   const removeTask = async () => {

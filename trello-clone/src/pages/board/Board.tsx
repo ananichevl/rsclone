@@ -203,7 +203,7 @@ const Board: React.FC = () => {
     confirm({
       title: t('modal_title_remove_board'),
       icon: <ExclamationCircleOutlined />,
-      content: `${t('modal_question_remove_board')} ${boardName}?`,
+      content: `${t('modal_question_remove_board')} ${title}?`,
       okText: t('modal_remove_btn'),
       cancelText: t('modal_cancel_btn'),
       onOk() {

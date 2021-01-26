@@ -1,6 +1,4 @@
 import React, {
-  Dispatch,
-  SetStateAction,
   useEffect,
   useState,
 } from 'react';
@@ -30,7 +28,6 @@ interface ITaskProps {
   boardId: string
   columnId: string
   taskProp: TaskModel
-  updateColumn: Dispatch<SetStateAction<TaskModel[]>>
 }
 
 export interface TaskModel {
@@ -42,7 +39,7 @@ export interface TaskModel {
 }
 
 const Task: React.FC<ITaskProps> = ({
-  boardId, columnId, taskProp, updateColumn,
+  boardId, columnId, taskProp,
 }) => {
   const dispatch = useDispatch();
   const [taskName, setTaskName] = useState<string>((taskProp && taskProp.title) || '');
@@ -60,7 +57,7 @@ const Task: React.FC<ITaskProps> = ({
 
   const handleCreateTask = async () => {
     if (taskProp.id !== '123') {
-      const task = await updateTask(
+      await updateTask(
         boardId,
         columnId,
         taskProp.id,
@@ -69,15 +66,8 @@ const Task: React.FC<ITaskProps> = ({
         taskName,
         undefined,
       );
-      updateColumn((prevState) => {
-        const taskIndex = prevState.findIndex((c) => c.id === taskProp.id);
-        if (taskIndex === -1) {
-          return prevState;
-        }
-        const newState = [...prevState];
-        newState[taskIndex] = task;
-        return newState;
-      });
+      const board = await getBoard(boardId);
+      dispatch(createGetBoardAction(board));
     } else {
       const task = await createTask(boardId, columnId, taskProp.order, taskName);
       dispatch(createAddTaskAction(task));
@@ -87,7 +77,7 @@ const Task: React.FC<ITaskProps> = ({
   };
 
   const updateDescription = async (descriptionValue: string) => {
-    const task = await updateTask(
+    await updateTask(
       boardId,
       columnId,
       taskProp.id,
@@ -96,15 +86,8 @@ const Task: React.FC<ITaskProps> = ({
       undefined,
       descriptionValue,
     );
-    updateColumn((prevState) => {
-      const taskIndex = prevState.findIndex((c) => c.id === taskProp.id);
-      if (taskIndex === -1) {
-        return prevState;
-      }
-      const newState = [...prevState];
-      newState[taskIndex] = task;
-      return newState;
-    });
+    const board = await getBoard(boardId);
+    dispatch(createGetBoardAction(board));
   };
 
   const showModal = (taskName: string) => {

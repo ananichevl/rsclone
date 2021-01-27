@@ -12,6 +12,7 @@ import { Draggable } from 'react-beautiful-dnd';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import ReactMarkdown from 'react-markdown';
 import SimpleInput from '../simpleInput/SimpleInput';
 import {
   createTask,
@@ -34,8 +35,8 @@ interface ITaskProps {
 export interface TaskModel {
   id: string
   order: number
-  title?: string
-  description?: string
+  title: string | ''
+  description: string | ''
   columnId?: string
 }
 
@@ -229,8 +230,8 @@ const Task: React.FC<ITaskProps> = ({
                   onChange={(value) => setTaskName(value)}
                   placeholder={t('placeholder_add_title')}
                   onBlur={(value) => {
-                    setTaskName(value);
                     if (value) {
+                      setTaskName(value);
                       setIsInputTitleVisible(false);
                     }
                   }}
@@ -282,7 +283,7 @@ const Task: React.FC<ITaskProps> = ({
           onKeyUp={(e) => console.log(e)}
           tabIndex={0}
         >
-          {taskProp.description}
+          <ReactMarkdown source={taskProp.description} className="markdown" />
         </div>
       </Modal>
     </>

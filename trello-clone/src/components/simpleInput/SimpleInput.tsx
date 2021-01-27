@@ -32,6 +32,7 @@ const SimpleInput: React.FC<IInputProps> = ({
           onBlur(e.target.value);
         }}
         value={value}
+        autofocus
       />
     </>
   );

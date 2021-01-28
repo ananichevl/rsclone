@@ -5,7 +5,9 @@ import {
   Droppable,
   DropResult,
 } from 'react-beautiful-dnd';
-import { PlusOutlined, EllipsisOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import {
+  PlusOutlined, EllipsisOutlined, ExclamationCircleOutlined, CheckOutlined,
+} from '@ant-design/icons';
 import { useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -20,15 +22,17 @@ import {
   updateColumn,
   updateTask,
   deleteBoard,
+  updateBoard,
 } from '../../service/Service';
 import { TaskModel } from '../../components/task/Task';
 import createGetBoardAction from '../../store/actions/getBoard';
 import createReorderColumnsAction from '../../store/actions/reorderColumns';
 import createReorderTasksAction from '../../store/actions/reorderTasks';
+import SimpleInput from '../../components/simpleInput/SimpleInput';
 
 const { confirm } = Modal;
 
-interface IBoardProps {
+export interface IBoardProps {
   id: string;
 }
 
@@ -50,6 +54,7 @@ const Board: React.FC = () => {
 
   const [title, setTitle] = useState(board.title);
   const [columns, setColumns] = useState<ColumnModel[]>(board.columns);
+  const [isInputTitleVisible, setIsInputTitleVisible] = useState(false);
 
   const { id } = useParams<IBoardProps>();
 
@@ -66,8 +71,6 @@ const Board: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    console.log('BOARD USEEFFECT');
-    console.log(board);
     setTitle(board.title);
     setColumns(board.columns);
   }, [board, board.columns, board.title]);
@@ -227,8 +230,22 @@ const Board: React.FC = () => {
     });
   };
 
+  const handleChangeBoardTitle = async () => {
+    if (board.id) {
+      const board = await updateBoard(id, title);
+      if (board.status && (board.status === 401 || board.status === 403)) {
+        history.push('/login');
+      }
+      dispatch(createGetBoardAction(board));
+    } else {
+      return;
+    }
+    setIsInputTitleVisible(false);
+  };
+
   const changeBoardName = () => {
-    // RENAME BOARD
+    setTitle(title);
+    setIsInputTitleVisible(true);
   };
 
   const columnCards = columns.map((column) => (
@@ -249,9 +266,26 @@ const Board: React.FC = () => {
   return (
     <>
       <div className="board-title">
-        <h2 title={title}>
+        <div style={{ display: isInputTitleVisible ? 'flex' : 'none' }}>
+          <div>
+            <SimpleInput
+              onChange={(value) => setTitle(value)}
+              placeholder={t('placeholder_add_title')}
+              inputValue={title}
+              onBlur={(value) => console.log(value)}
+            />
+          </div>
+          <Button
+            icon={<CheckOutlined />}
+            onClick={handleChangeBoardTitle}
+          />
+        </div>
+        <div
+          className="board__title"
+          style={{ display: isInputTitleVisible ? 'none' : 'flex' }}
+        >
           {title}
-        </h2>
+        </div>
         <Dropdown overlay={menu} trigger={['click']}>
           <Button>
             {t('menu_btn')}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { PlusOutlined, EditOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 import { Modal, Card, Button } from 'antd';
 import { useTranslation } from 'react-i18next';
 import SimpleInput from '../../components/simpleInput/SimpleInput';
@@ -14,6 +14,7 @@ import createCreateBoardAction from '../../store/actions/createBoard';
 
 const Dashboard: React.FC = () => {
   const history = useHistory();
+  const boardName = useSelector<IState, string>((state) => state.board.title);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [boards, setBoards] = useState<BoardModel[]>([]);
   const dispatch = useDispatch();
@@ -37,8 +38,6 @@ const Dashboard: React.FC = () => {
     loadBoards();
   }, []);
 
-  const boardName = useSelector<IState, string>((state) => state.board.title);
-
   const handleOk = async () => {
     const board = await createBoard(boardName);
     if (board.status && (board.status === 401 || board.status === 403)) {
@@ -47,6 +46,8 @@ const Dashboard: React.FC = () => {
     dispatch(createCreateBoardAction(board));
     history.push(`board/${board.id}`);
   };
+
+  const { t } = useTranslation();
 
   const boardCards = boards.map((board) => (
     <Card
@@ -57,11 +58,8 @@ const Dashboard: React.FC = () => {
       <div>
         {board.title}
       </div>
-      <Button icon={<EditOutlined className="icon-edit" style={{ width: '12px', height: '12px' }} />} onClick={showModal} style={{ position: 'absolute', top: '30px', left: '100px' }} />
     </Card>
   ));
-
-  const { t } = useTranslation();
 
   return (
     <>

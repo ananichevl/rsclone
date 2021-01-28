@@ -14,5 +14,6 @@
   "add_column_btn": "Add column",
   "add_task_btn": "Add task",
   "column_menu_remove_column": "Remove column",
-  "task_menu_remove_task": "Remove task"
+  "task_menu_remove_task": "Remove task",
+  "change_background": "CHANGE BACKGROUND"
 }

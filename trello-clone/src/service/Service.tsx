@@ -122,6 +122,28 @@ export async function getBoard(id: string): Promise<any> {
   }
 }
 
+export async function updateBoard(id: string, title: string): Promise<any> {
+  const body = {
+    title,
+  };
+
+  const requestOptions = {
+    headers: addAuthorizationHeader(),
+    method: 'PUT',
+    body: JSON.stringify(body),
+  };
+
+  try {
+    const response = await fetch(`${server}/boardsv2/${id}`, requestOptions);
+    if (response.ok) {
+      return await response.json();
+    }
+    return response;
+  } catch (e) {
+    return e;
+  }
+}
+
 export async function getColumn(boardId: string, columnId: string): Promise<any> {
   const requestOptions = {
     headers: addAuthorizationHeader(),

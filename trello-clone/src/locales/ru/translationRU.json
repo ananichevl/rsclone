@@ -14,5 +14,6 @@
   "add_column_btn": "Добавить колонку",
   "add_task_btn": "Добавить задачу",
   "column_menu_remove_column": "Удалить колонку",
-  "task_menu_remove_task": "Удалить задачу"
+  "task_menu_remove_task": "Удалить задачу",
+  "change_background": "ИЗМЕНИТЬ ФОН"
 }

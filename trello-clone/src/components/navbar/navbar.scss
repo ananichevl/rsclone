@@ -1,6 +1,8 @@
 .header {
   position: fixed;
   z-index: 1;
+  display: flex;
+  justify-content: space-between;
   width: 100%;
   height: 3rem;
 }
@@ -11,6 +13,37 @@
   align-items: center;
   height: 100%;
   width: 2rem;
+}
+
+.bgMenuContainer {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.bgMenuItem {
+  width: 45%;
+  height: 90px;
+  background: blue;
+  display: flex;
+  align-items: flex-end;
+  border-radius: 8px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  outline: none;
+}
+
+.bgItem {
+  width: 45%;
+  height: 90px;
+  margin-top: 10px;
+  background: blue;
+  display: flex;
+  align-items: flex-end;
+  border-radius: 8px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  outline: none;
 }
 
 .ant-layout-header:active .ant-menu:active {

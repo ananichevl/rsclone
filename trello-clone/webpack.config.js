@@ -39,7 +39,11 @@ module.exports = {
                 options: {
                     name: 'assets/[hash].[ext]',
                 }
-            }
+            }, {
+                test: /\.json5$/i,
+                loader: 'json5-loader',
+                type: 'javascript/auto',
+            },
         ]
     },
     resolve: {

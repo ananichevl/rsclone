@@ -289,6 +289,8 @@ const Task: React.FC<ITaskProps> = ({
               updateDescription(e.target.value);
             }
           }}
+          defaultValue={taskProp.description}
+          autoFocus
         />
         <div
           style={{ display: isTextAreaVisible ? 'none' : 'flex', outline: 'none' }}

@@ -3,7 +3,7 @@ import React, {
   useState,
 } from 'react';
 import {
-  Button, Card, Modal, Input, Dropdown, Menu,
+  Button, Card, Modal, Input, Dropdown, Menu, Popover,
 } from 'antd';
 import {
   CheckOutlined, EditOutlined, AlignLeftOutlined, ProjectOutlined,
@@ -164,7 +164,7 @@ const Task: React.FC<ITaskProps> = ({
   );
 
   return (
-    <>
+    <p>
       <Draggable key={taskProp.id} draggableId={taskProp.id} index={taskProp.order}>
         {(provided) => (
           <div
@@ -262,9 +262,23 @@ const Task: React.FC<ITaskProps> = ({
         }}
         footer={null}
       >
-        <div className="description">
-          <AlignLeftOutlined className="icon-description" />
-          Описание:
+        <div className="description" style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div>
+            <AlignLeftOutlined className="icon-description" />
+            {t('task_description')}
+            :
+          </div>
+          <Popover
+            placement="right"
+            content={
+              <pre>{t('formatting_hint')}</pre>
+            }
+            trigger="click"
+          >
+            <Button style={{ cursor: 'help' }}>
+              {t('formatting_btn')}
+            </Button>
+          </Popover>
         </div>
         <TextArea
           rows={4}
@@ -286,7 +300,7 @@ const Task: React.FC<ITaskProps> = ({
           <ReactMarkdown source={taskProp.description} className="markdown" />
         </div>
       </Modal>
-    </>
+    </p>
   );
 };
 

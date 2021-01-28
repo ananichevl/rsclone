@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Form } from 'antd';
 import { useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import SimpleInput from '../../components/simpleInput/SimpleInput';
 import { loginUser } from '../../service/Service';
 
@@ -29,10 +30,11 @@ const Login: React.FC = () => {
   };
 
   const onFinishFailed = () => console.log('fail');
+  const { t } = useTranslation();
 
   return (
     <div>
-      <h1 style={{ width: '10rem', margin: '5rem auto 1rem' }}>Please log in</h1>
+      <h1 style={{ width: '20rem', margin: '5rem auto 1rem', textAlign: 'center' }}>{t('log_in')}</h1>
       <Form
         {...layout}
         name="basic"
@@ -41,19 +43,19 @@ const Login: React.FC = () => {
         onFinishFailed={onFinishFailed}
       >
         <Form.Item
-          label="Username"
+          label={t('username')}
           name="username"
-          rules={[{ required: true, message: 'Please input your username!' }]}
+          rules={[{ required: true, message: `${t('login_input_message')}` }]}
         >
-          <SimpleInput onBlur={() => console.log()} onChange={setLogin} inputValue={login} placeholder="Username" />
+          <SimpleInput onBlur={() => console.log()} onChange={setLogin} inputValue={login} placeholder={t('username')} />
         </Form.Item>
 
         <Form.Item
-          label="Password"
+          label={t('password')}
           name="password"
-          rules={[{ required: true, message: 'Please input your password!' }]}
+          rules={[{ required: true, message: `${t('password_input_message')}` }]}
         >
-          <SimpleInput onBlur={() => console.log()} onChange={setPassword} inputValue={password} placeholder="Password" />
+          <SimpleInput onBlur={() => console.log()} onChange={setPassword} inputValue={password} placeholder={t('password')} />
         </Form.Item>
 
         <Form.Item {...tailLayout}>

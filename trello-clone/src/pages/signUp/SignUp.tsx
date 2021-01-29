@@ -1,30 +1,27 @@
 import React from 'react';
-import { Button, Form, Input } from 'antd';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Button, Form, Input } from 'antd';
 import {
   UserOutlined, LockOutlined,
 } from '@ant-design/icons';
-import { loginUser } from '../../service/Service';
+import { createUser } from '../../service/Service';
 
-interface LoginFormModel {
+export interface SignUpFormModel {
   username: string
   password: string
+  passwordRepeat: string
 }
 
-export interface UserModel {
-  id: string
-  login: string
-  token: string
-}
-
-const Login: React.FC = () => {
+const SignUp: React.FC = () => {
   const history = useHistory();
 
-  const onFinish = async (value: LoginFormModel) => {
-    const user = await loginUser(value.username, value.password);
-    document.cookie = `Bearer=${user.token}`;
-    history.push('/');
+  const onFinish = async (value: SignUpFormModel) => {
+    if (value.password === value.passwordRepeat) {
+      const user = await createUser(value.username, value.password);
+      document.cookie = `Bearer=${user.token}`;
+      history.push('/');
+    }
   };
 
   const onFinishFailed = () => console.log('fail');
@@ -32,7 +29,7 @@ const Login: React.FC = () => {
 
   return (
     <div>
-      <h1 style={{ width: '20rem', margin: '5rem auto 1rem', textAlign: 'center' }}>{t('log_in')}</h1>
+      <h1 style={{ width: '20rem', margin: '5rem auto 1rem', textAlign: 'center' }}>{t('sign_up')}</h1>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Form
           style={{ maxWidth: 300 }}
@@ -61,14 +58,22 @@ const Login: React.FC = () => {
             />
           </Form.Item>
 
+          <Form.Item
+            label={t('confirm')}
+            name="passwordRepeat"
+            rules={[{ required: true, message: `${t('password_input_message')}` }]}
+          >
+            <Input
+              prefix={<LockOutlined className="site-form-item-icon" />}
+              type="password"
+              placeholder={t('confirm')}
+            />
+          </Form.Item>
+
           <Form.Item>
             <Button style={{ width: '100%' }} type="primary" htmlType="submit">
-              Log in
+              Sign Up
             </Button>
-            <div>
-              Or
-              <Link to="/signUp"> register now!</Link>
-            </div>
           </Form.Item>
         </Form>
       </div>
@@ -76,4 +81,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default SignUp;

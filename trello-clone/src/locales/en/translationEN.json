@@ -1,7 +1,9 @@
 {
   "log_in": "Please log in",
+  "sign_up": "Create your account",
   "username": "Username",
   "password": "Password",
+  "confirm": "Confirm",
   "login_input_message": "Please input your username!",
   "password_input_message": "Please input your password!",
   "boards": "Boards",

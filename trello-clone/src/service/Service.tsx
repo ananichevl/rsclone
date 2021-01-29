@@ -296,6 +296,29 @@ export async function loginUser(login: string, password: string): Promise<UserMo
   };
 
   try {
+    const response = await fetch(`${server}/users/login`, requestOptions);
+    if (response.ok) {
+      return await response.json();
+    }
+    return response;
+  } catch (e) {
+    return e;
+  }
+}
+
+export async function createUser(login: string, password: string): Promise<UserModel | any> {
+  const body = {
+    login,
+    password,
+  };
+
+  const requestOptions = {
+    headers,
+    method: 'POST',
+    body: JSON.stringify(body),
+  };
+
+  try {
     const response = await fetch(`${server}/users`, requestOptions);
     if (response.ok) {
       return await response.json();

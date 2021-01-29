@@ -1,11 +1,8 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { Layout } from 'antd';
 import Navbar from './components/navbar/Navbar';
-import Dashboard from './pages/dashboard/Dashboard';
-import Board from './pages/board/Board';
-import Login from './pages/login/Login';
-import SignUp from './pages/signUp/SignUp';
+import Wrapper from './pages/Wrapper';
 
 const { Header, Content, Footer } = Layout;
 
@@ -19,16 +16,7 @@ const App: React.FC = () => (
       <Content
         className="site-layout"
       >
-        <div
-          className="site-layout-content"
-        >
-          <Switch>
-            <Route component={Login} path="/login" />
-            <Route component={SignUp} path="/signUp" />
-            <Route component={Dashboard} path="/" exact />
-            <Route component={Board} path="/board/:id" />
-          </Switch>
-        </div>
+        <Wrapper />
       </Content>
       <Footer className="footer" style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
     </Layout>

@@ -5,6 +5,7 @@ import Navbar from './components/navbar/Navbar';
 import Dashboard from './pages/dashboard/Dashboard';
 import Board from './pages/board/Board';
 import Login from './pages/login/Login';
+import SignUp from './pages/signUp/SignUp';
 
 const { Header, Content, Footer } = Layout;
 
@@ -26,6 +27,7 @@ const App: React.FC = () => (
         >
           <Switch>
             <Route component={Login} path="/login" />
+            <Route component={SignUp} path="/signUp" />
             <Route component={Dashboard} path="/" exact />
             <Route component={Board} path="/board/:id" />
           </Switch>

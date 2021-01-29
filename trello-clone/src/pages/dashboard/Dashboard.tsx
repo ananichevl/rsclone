@@ -68,7 +68,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <>
-      <h4>{t('boards')}</h4>
+      <h1>{t('boards')}</h1>
       <div className="loader" style={{ display: isLoaderVisible ? 'flex' : 'none' }}>
         <Spin size="large" />
       </div>

@@ -17,9 +17,6 @@ const App: React.FC = () => (
       </Header>
       <Content
         className="site-layout"
-        style={{
-          padding: '0 50px', marginTop: 64,
-        }}
       >
         <div
           className="site-layout-content"

@@ -1,6 +1,4 @@
 .header {
-  position: fixed;
-  z-index: 1;
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -44,10 +42,6 @@
   background-size: cover;
   background-repeat: no-repeat;
   outline: none;
-}
-
-.ant-layout-header:active .ant-menu:active {
-  background-color: #000;
 }
 
 .icon-lang {

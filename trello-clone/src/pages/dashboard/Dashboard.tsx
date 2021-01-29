@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { PlusOutlined } from '@ant-design/icons';
-import { Modal, Card, Button } from 'antd';
+import {
+  Modal, Card, Button, Spin,
+} from 'antd';
 import { useTranslation } from 'react-i18next';
 import SimpleInput from '../../components/simpleInput/SimpleInput';
 import createSelectBoardAction from '../../store/actions/selectBoard';
@@ -18,6 +20,8 @@ const Dashboard: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [boards, setBoards] = useState<BoardModel[]>([]);
   const dispatch = useDispatch();
+  const [isLoaderVisible, setLoaderVisible] = useState(true);
+
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -34,6 +38,7 @@ const Dashboard: React.FC = () => {
         history.push('/login');
       }
       setBoards(loadedBoards);
+      setLoaderVisible(false);
     };
     loadBoards();
   }, []);
@@ -64,7 +69,10 @@ const Dashboard: React.FC = () => {
   return (
     <>
       <h4>{t('boards')}</h4>
-      <div className="boards-container">
+      <div className="loader" style={{ display: isLoaderVisible ? 'flex' : 'none' }}>
+        <Spin size="large" />
+      </div>
+      <div className="boards-container" style={{ display: isLoaderVisible ? 'none' : 'flex' }}>
         {boardCards}
         <Card className="create-board-btn" onClick={showModal} hoverable>
           <PlusOutlined className="icon" />

@@ -20,11 +20,8 @@
   "add_task_btn": "Add task",
   "column_menu_remove_column": "Remove column",
   "task_menu_remove_task": "Remove task",
-<<<<<<< HEAD
-  "change_background": "CHANGE BACKGROUND"
-=======
+  "change_background": "CHANGE BACKGROUND",
   "task_description": "Description",
   "formatting_btn": "Formatting hint",
   "formatting_hint": "Use Markdown for formatting. For example:\n\n# Level 1 heading \n### Level 3 heading\n###### Level 6 heading\n\nParagraphs\nAdd two new lines to start new paragraph.\n\nBold\n**bold**\n\nItalic\n*italic*\n\nLists\n* bullet list item\n- another bullet list item\n+ bullet markers may differ\n\n1. Numbered list item\n2. Second numbered list item\n9. Item #3, elements are numbered by natural order\nnumber value doesn't matter\n\nLinks\n[example](http://example.com)\n\nImages\n![Alt-text](http://example.com/)"
->>>>>>> 1f381a399ba9b08cb6602d41aa7ab3a38953489d
 }

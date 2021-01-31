@@ -29,6 +29,7 @@ import createGetBoardAction from '../../store/actions/getBoard';
 import createReorderColumnsAction from '../../store/actions/reorderColumns';
 import createReorderTasksAction from '../../store/actions/reorderTasks';
 import SimpleInput from '../../components/simpleInput/SimpleInput';
+import SideMenu from '../../components/sideMenu/SideMenu';
 
 const { confirm } = Modal;
 
@@ -44,6 +45,7 @@ interface MoveResult {
 export interface BoardModel {
   id: string;
   title: string;
+  background: string;
   columns: ColumnModel[];
 }
 
@@ -51,7 +53,8 @@ const Board: React.FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const board = useSelector<IState, IBoard>((state) => state.board);
-
+  const [visible, setVisible] = useState(false);
+  const [backgroundBody, setBackgroundBody] = useState('lightblue');
   const [title, setTitle] = useState(board.title);
   const [columns, setColumns] = useState<ColumnModel[]>(board.columns);
   const [isInputTitleVisible, setIsInputTitleVisible] = useState(false);
@@ -73,7 +76,8 @@ const Board: React.FC = () => {
   useEffect(() => {
     setTitle(board.title);
     setColumns(board.columns);
-  }, [board, board.columns, board.title]);
+    setBackgroundBody(board.background);
+  }, [board, board.columns, board.title, board.background]);
 
   const reorder = (
     startIndex: number,
@@ -248,6 +252,10 @@ const Board: React.FC = () => {
     setIsInputTitleVisible(true);
   };
 
+  const showDrawer = () => {
+    setVisible(true);
+  };
+
   const columnCards = columns.map((column) => (
     <Column boardId={id} columnProp={column} />
   ));
@@ -259,6 +267,9 @@ const Board: React.FC = () => {
       </Menu.Item>
       <Menu.Item key="2" onClick={changeBoardName}>
         {t('change_title')}
+      </Menu.Item>
+      <Menu.Item key="3" onClick={showDrawer}>
+        {t('change_background')}
       </Menu.Item>
     </Menu>
   );
@@ -293,7 +304,16 @@ const Board: React.FC = () => {
           </Button>
         </Dropdown>
       </div>
-      <div className="boardBody" style={{ display: 'flex' }}>
+      <div
+        className="boardBody"
+        style={{
+          display: 'flex',
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat',
+          backgroundImage: backgroundBody,
+          backgroundColor: backgroundBody,
+        }}
+      >
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable
             key={id}
@@ -322,6 +342,7 @@ const Board: React.FC = () => {
             {t('add_column_btn')}
           </Button>
         </DragDropContext>
+        <SideMenu visibleProp={visible} setNewBgBody={setBackgroundBody} />
       </div>
     </>
   );

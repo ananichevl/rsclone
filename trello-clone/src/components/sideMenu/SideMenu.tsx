@@ -6,13 +6,13 @@ import images from '../../utils/img/images';
 
 interface ISideMenuProps {
   visibleProp: boolean;
+  setNewBgBody: (backgroundBody: string) => void
 }
 
-const SideMenu: React.FC<ISideMenuProps> = ({ visibleProp }) => {
+const SideMenu: React.FC<ISideMenuProps> = ({ visibleProp, setNewBgBody }) => {
   const { t } = useTranslation();
   const [openColorOption, setOpenColorOption] = useState(false);
   const [openImageOption, setOpenImageOption] = useState(false);
-
   const [visible, setVisible] = useState<boolean>(visibleProp);
 
   useEffect(() => {
@@ -74,7 +74,7 @@ const SideMenu: React.FC<ISideMenuProps> = ({ visibleProp }) => {
               onKeyUp={(e) => console.log(e)}
               tabIndex={0}
               className="bgItem"
-              onClick={() => console.log(image)}
+              onClick={() => setNewBgBody(image)}
               style={{ backgroundImage: image }}
             >
               <span />
@@ -88,7 +88,7 @@ const SideMenu: React.FC<ISideMenuProps> = ({ visibleProp }) => {
               onKeyUp={(e) => console.log(e)}
               tabIndex={0}
               className="bgItem"
-              onClick={() => console.log(color)}
+              onClick={() => setNewBgBody(color)}
               style={{ backgroundColor: color }}
             >
               <span />

@@ -17,6 +17,7 @@ import addTaskReducer from './reducers/addTaskReducer';
 export interface IBoard {
   id: string
   title: string
+  background: string
   columns: ColumnModel[]
 }
 
@@ -28,6 +29,7 @@ const initialState: IState = {
   board: {
     id: '',
     title: '',
+    background: '',
     columns: [],
   },
 };

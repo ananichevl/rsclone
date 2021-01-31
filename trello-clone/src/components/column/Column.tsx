@@ -123,6 +123,12 @@ const Column: React.FC<IColumnProps> = ({
                         placeholder={t('placeholder_add_title')}
                         inputValue={columnName}
                         onBlur={(value) => console.log(value)}
+                        onPressEnter={(value) => {
+                          if (value) {
+                            setColumnName(value);
+                            handleCheck();
+                          }
+                        }}
                       />
                     </div>
                     <Button

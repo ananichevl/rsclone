@@ -96,6 +96,12 @@ const Dashboard: React.FC = () => {
         <SimpleInput
           onChange={(value) => dispatch(createSelectBoardAction(value))}
           placeholder={t('placeholder_add_title')}
+          onPressEnter={(value) => {
+            if (value) {
+              dispatch(createSelectBoardAction(value));
+              handleOk();
+            }
+          }}
         />
       </Modal>
     </>

@@ -7,9 +7,10 @@ import images from '../../utils/img/images';
 interface ISideMenuProps {
   visibleProp: boolean;
   setNewBgBody: (backgroundBody: string) => void
+  closeBgMenu: (arg: boolean) => void
 }
 
-const SideMenu: React.FC<ISideMenuProps> = ({ visibleProp, setNewBgBody }) => {
+const SideMenu: React.FC<ISideMenuProps> = ({ visibleProp, setNewBgBody, closeBgMenu }) => {
   const { t } = useTranslation();
   const [openColorOption, setOpenColorOption] = useState(false);
   const [openImageOption, setOpenImageOption] = useState(false);
@@ -20,7 +21,7 @@ const SideMenu: React.FC<ISideMenuProps> = ({ visibleProp, setNewBgBody }) => {
   }, [visibleProp]);
 
   const onClose = () => {
-    setVisible(false);
+    closeBgMenu(false);
     setOpenImageOption(false);
     setOpenColorOption(false);
   };

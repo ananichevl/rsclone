@@ -6,6 +6,7 @@ interface IInputProps {
   onChange: (arg: string) => void;
   onBlur: (arg?: string) => void;
   inputValue?: string;
+  onPressEnter?: (arg?: string) => void;
 }
 
 const SimpleInput: React.FC<IInputProps> = ({
@@ -13,6 +14,7 @@ const SimpleInput: React.FC<IInputProps> = ({
   onChange,
   onBlur,
   inputValue,
+  onPressEnter,
 }) => {
   const [value, setValue] = useState(inputValue || '');
 
@@ -30,6 +32,9 @@ const SimpleInput: React.FC<IInputProps> = ({
         }}
         onBlur={(e) => {
           onBlur(e.target.value);
+        }}
+        onPressEnter={(e) => {
+          onPressEnter(e.currentTarget.value);
         }}
         value={value}
         autofocus

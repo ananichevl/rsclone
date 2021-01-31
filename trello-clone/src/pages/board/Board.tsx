@@ -281,7 +281,13 @@ const Board: React.FC = () => {
       <div className="loader" style={{ display: isLoaderVisible ? 'flex' : 'none' }}>
         <Spin size="large" />
       </div>
-      <div style={{ display: isLoaderVisible ? 'none' : 'block' }}>
+      <div
+        className="boardWrapper"
+        style={{
+          display: isLoaderVisible ? 'none' : 'block',
+          background: backgroundBody,
+        }}
+      >
         <div className="board-title">
           <div style={{ display: isInputTitleVisible ? 'flex' : 'none' }}>
             <div>
@@ -289,7 +295,16 @@ const Board: React.FC = () => {
                 onChange={(value) => setTitle(value)}
                 placeholder={t('placeholder_add_title')}
                 inputValue={title}
-                onBlur={(value) => console.log(value)}
+                onBlur={(value) => {
+                  if (value) {
+                    handleChangeBoardTitle();
+                  }
+                }}
+                onPressEnter={(value) => {
+                  if (value) {
+                    handleChangeBoardTitle();
+                  }
+                }}
               />
             </div>
             <Button
@@ -312,13 +327,7 @@ const Board: React.FC = () => {
         </div>
         <div
           className="boardBody"
-          style={{
-            display: 'flex',
-            backgroundSize: 'cover',
-            backgroundRepeat: 'no-repeat',
-            backgroundImage: backgroundBody,
-            backgroundColor: backgroundBody,
-          }}
+          style={{ display: 'flex' }}
         >
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable
@@ -348,7 +357,11 @@ const Board: React.FC = () => {
               {t('add_column_btn')}
             </Button>
           </DragDropContext>
-          <SideMenu visibleProp={visible} setNewBgBody={setBackgroundBody} />
+          <SideMenu
+            visibleProp={visible}
+            setNewBgBody={setBackgroundBody}
+            closeBgMenu={setVisible}
+          />
         </div>
       </div>
     </>

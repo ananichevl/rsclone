@@ -190,6 +190,12 @@ const Task: React.FC<ITaskProps> = ({
                             setIsInputTitleVisible(false);
                           }
                         }}
+                        onPressEnter={(value) => {
+                          if (value) {
+                            setTaskName(value);
+                            setIsInputTitleVisible(false);
+                          }
+                        }}
                         inputValue={taskName}
                       />
                     </div>

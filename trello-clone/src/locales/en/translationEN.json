@@ -1,11 +1,15 @@
 {
   "log_in": "Please log in",
   "sign_up": "Create your account",
+  "sign_up_btn": "Sign up",
   "username": "Username",
   "password": "Password",
   "confirm": "Confirm",
   "login_input_message": "Please input your username!",
   "password_input_message": "Please input your password!",
+  "log_in_btn": "Log in",
+  "or": "Or",
+  "register_link": " register now!",
   "boards": "Boards",
   "create_board": "Create board",
   "new_board": "New board",
@@ -24,6 +28,6 @@
   "task_menu_remove_task": "Remove task",
   "change_background": "Change background",
   "task_description": "Description",
-  "formatting_btn": "Formatting hint",
+  "formatting_btn": "Formatting",
   "formatting_hint": "Use Markdown for formatting. For example:\n\n# Level 1 heading \n### Level 3 heading\n###### Level 6 heading\n\nParagraphs\nAdd two new lines to start new paragraph.\n\nBold\n**bold**\n\nItalic\n*italic*\n\nLists\n* bullet list item\n- another bullet list item\n+ bullet markers may differ\n\n1. Numbered list item\n2. Second numbered list item\n9. Item #3, elements are numbered by natural order\nnumber value doesn't matter\n\nLinks\n[example](http://example.com)\n\nImages\n![Alt-text](http://example.com/)"
 }

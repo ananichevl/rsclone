@@ -63,11 +63,11 @@ const Login: React.FC = () => {
 
           <Form.Item>
             <Button style={{ width: '100%' }} type="primary" htmlType="submit">
-              Log in
+              {t('log_in_btn')}
             </Button>
             <div>
-              Or
-              <Link to="/signUp"> register now!</Link>
+              {t('or')}
+              <Link to="/signUp">{t('register_link')}</Link>
             </div>
           </Form.Item>
         </Form>

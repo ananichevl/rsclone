@@ -72,7 +72,7 @@ const SignUp: React.FC = () => {
 
           <Form.Item>
             <Button style={{ width: '100%' }} type="primary" htmlType="submit">
-              Sign Up
+              {t('sign_up_btn')}
             </Button>
           </Form.Item>
         </Form>

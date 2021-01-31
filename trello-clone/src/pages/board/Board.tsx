@@ -11,7 +11,7 @@ import {
 import { useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  Button, Menu, Dropdown, Modal,
+  Button, Menu, Dropdown, Modal, Spin,
 } from 'antd';
 import { useTranslation } from 'react-i18next';
 import Column, { ColumnModel } from '../../components/column/Column';
@@ -58,6 +58,7 @@ const Board: React.FC = () => {
   const [title, setTitle] = useState(board.title);
   const [columns, setColumns] = useState<ColumnModel[]>(board.columns);
   const [isInputTitleVisible, setIsInputTitleVisible] = useState(false);
+  const [isLoaderVisible, setLoaderVisible] = useState(true);
 
   const { id } = useParams<IBoardProps>();
 
@@ -68,6 +69,7 @@ const Board: React.FC = () => {
         history.push('/login');
       }
       dispatch(createGetBoardAction(board));
+      setLoaderVisible(false);
     };
 
     loadBoard();
@@ -276,73 +278,78 @@ const Board: React.FC = () => {
 
   return (
     <>
-      <div className="board-title">
-        <div style={{ display: isInputTitleVisible ? 'flex' : 'none' }}>
-          <div>
-            <SimpleInput
-              onChange={(value) => setTitle(value)}
-              placeholder={t('placeholder_add_title')}
-              inputValue={title}
-              onBlur={(value) => console.log(value)}
+      <div className="loader" style={{ display: isLoaderVisible ? 'flex' : 'none' }}>
+        <Spin size="large" />
+      </div>
+      <div style={{ display: isLoaderVisible ? 'none' : 'block' }}>
+        <div className="board-title">
+          <div style={{ display: isInputTitleVisible ? 'flex' : 'none' }}>
+            <div>
+              <SimpleInput
+                onChange={(value) => setTitle(value)}
+                placeholder={t('placeholder_add_title')}
+                inputValue={title}
+                onBlur={(value) => console.log(value)}
+              />
+            </div>
+            <Button
+              icon={<CheckOutlined />}
+              onClick={handleChangeBoardTitle}
             />
           </div>
-          <Button
-            icon={<CheckOutlined />}
-            onClick={handleChangeBoardTitle}
-          />
+          <div
+            className="board__title"
+            style={{ display: isInputTitleVisible ? 'none' : 'flex' }}
+          >
+            {title}
+          </div>
+          <Dropdown overlay={menu} trigger={['click']}>
+            <Button>
+              {t('menu_btn')}
+              <EllipsisOutlined />
+            </Button>
+          </Dropdown>
         </div>
         <div
-          className="board__title"
-          style={{ display: isInputTitleVisible ? 'none' : 'flex' }}
+          className="boardBody"
+          style={{
+            display: 'flex',
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+            backgroundImage: backgroundBody,
+            backgroundColor: backgroundBody,
+          }}
         >
-          {title}
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable
+              key={id}
+              droppableId={id}
+              direction="horizontal"
+              type="column"
+            >
+              {(provided) => (
+                <div
+                  style={{ display: 'flex' }}
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                >
+                  {columnCards}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+            <Button
+              onClick={() => {
+                setColumns([...columns, { order: columns.length }]);
+              }}
+              icon={<PlusOutlined />}
+              style={{ marginRight: '3rem' }}
+            >
+              {t('add_column_btn')}
+            </Button>
+          </DragDropContext>
+          <SideMenu visibleProp={visible} setNewBgBody={setBackgroundBody} />
         </div>
-        <Dropdown overlay={menu} trigger={['click']}>
-          <Button>
-            {t('menu_btn')}
-            <EllipsisOutlined />
-          </Button>
-        </Dropdown>
-      </div>
-      <div
-        className="boardBody"
-        style={{
-          display: 'flex',
-          backgroundSize: 'cover',
-          backgroundRepeat: 'no-repeat',
-          backgroundImage: backgroundBody,
-          backgroundColor: backgroundBody,
-        }}
-      >
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable
-            key={id}
-            droppableId={id}
-            direction="horizontal"
-            type="column"
-          >
-            {(provided) => (
-              <div
-                style={{ display: 'flex' }}
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-              >
-                {columnCards}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-          <Button
-            onClick={() => {
-              setColumns([...columns, { order: columns.length }]);
-            }}
-            icon={<PlusOutlined />}
-            style={{ marginRight: '3rem' }}
-          >
-            {t('add_column_btn')}
-          </Button>
-        </DragDropContext>
-        <SideMenu visibleProp={visible} setNewBgBody={setBackgroundBody} />
       </div>
     </>
   );

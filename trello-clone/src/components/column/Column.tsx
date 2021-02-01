@@ -94,7 +94,7 @@ const Column: React.FC<IColumnProps> = ({
     </Menu>
   );
 
-  const taskCards = tasks.map((task) => (
+  const taskCards = tasks.map((task: TaskModel) => (
     <Task
       boardId={boardId}
       columnId={columnId}
@@ -123,6 +123,12 @@ const Column: React.FC<IColumnProps> = ({
                         placeholder={t('placeholder_add_title')}
                         inputValue={columnName}
                         onBlur={(value) => console.log(value)}
+                        onPressEnter={(value) => {
+                          if (value) {
+                            setColumnName(value);
+                            handleCheck();
+                          }
+                        }}
                       />
                     </div>
                     <Button
@@ -156,9 +162,9 @@ const Column: React.FC<IColumnProps> = ({
                 )}
               </Droppable>
               <Button
+                className="add-task-btn"
                 onClick={() => setTasks([...tasks, { id: '123', order: tasks.length }])}
                 icon={<PlusOutlined />}
-                style={{ width: '100%', textAlign: 'left' }}
               >
                 {t('add_task_btn')}
               </Button>

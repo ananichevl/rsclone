@@ -1,3 +1,5 @@
+@import '../../utils/variables';
+
 .board-column__input-title {
   display: flex;
 }
@@ -5,6 +7,14 @@
 .board-column__title {
   justify-content: space-between;
   align-items: center;
+  @include middle-text();
+  color: #fff;
+}
+
+.ant-card-head {
+  border-top-left-radius: $border-radius;
+  border-top-right-radius: $border-radius;
+  background-color: $color-violet;
 }
 
 .options-btn {
@@ -25,7 +35,8 @@
 }
 
 .board-column {
-  width: 12rem;
+  width: 22.5rem;
+  border-radius: $border-radius;
 }
 
 .column-body {
@@ -52,4 +63,18 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(200, 213, 252, 0.555);
+}
+
+.add-task-btn {
+  width: 19rem;
+  height: 2.5rem;
+  border-radius: $border-radius;
+  background-color: $color-violet;
+  text-align: left;
+  color: #fff;
+}
+
+.add-task-btn:hover {
+  border-color: $color-violet;
+  color: $text-color;
 }

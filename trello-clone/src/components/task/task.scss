@@ -1,0 +1,25 @@
+@import '../../utils/variables';
+
+.task {
+  width: 19rem;
+  height: 5rem;
+  border: 2px solid $color-orange;
+  border-radius: $border-radius;
+  @include small-text();
+  color: $text-color;
+  transition: all .3s;
+}
+
+.task:hover {
+  background-color: $color-orange;
+  color: #fff;
+}
+
+.edit-task-btn {
+  margin-left: auto;
+  border: none;
+}
+
+.edit-task-btn:hover {
+  color: $color-violet;
+}

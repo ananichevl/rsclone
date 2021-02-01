@@ -1,35 +1,42 @@
+@import '../../utils/variables';
+
 .boards-container {
   display: flex;
   flex-wrap: wrap;
 }
 
-.ant-card-body {
-  padding: 5px;
+.dashboard-title {
+  @include big-text();
+  color: $text-color;
 }
 
 .board, .create-board-btn {
-  width: 155px;
-  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 28rem;
+  height: 15rem;
   margin: 0 1rem 1rem 0;
+  border-radius: $border-radius;
+  text-align: center;
   line-height: 1.8rem;
-
-  .icon {
-    margin-right: 5px;
-  }
-}
-
-.board {
-  padding: 0 5px;
 }
 
 .dashboard-wrapper {
+  padding: 2rem;
   width: 100%;
+  height: 100%;
+  background: #fff url("../../utils/img/dashboard.png") no-repeat right bottom;
+  background-size: 66rem 25rem;
 }
 
 .create-board-btn {
-  padding: 20px 10px;
-  background-color: rgb(230, 238, 248);
-  text-align: center;
+  background-color: #E0E0E0;
+}
+
+.board-title-card {
+  @include big-text();
+  color: #FFFFFF;
 }
 
 .loader {
@@ -38,4 +45,36 @@
   align-items: center;
   width: 100%;
   height: 30vh;
+}
+
+.ant-modal-content, .ant-modal-header {
+  border-radius: $border-radius;
+  color: $text-color;
+}
+
+.modal-cancel-btn, .modal-submit-btn {
+  width: 9.34rem;
+  border-radius: $border-radius;
+}
+
+.modal-cancel-btn {
+  border-color: $text-color;
+  color: $text-color;
+}
+
+.modal-cancel-btn:hover {
+  border-color: $color-violet;
+  color: $color-violet;
+}
+
+.modal-submit-btn {
+  background-color: $color-orange;
+  border-color: $color-orange;
+  color: #fff;
+}
+
+.modal-submit-btn:hover {
+  background-color: $color-orange-light;
+  border-color: $color-orange-light;
+  color: #fff;
 }

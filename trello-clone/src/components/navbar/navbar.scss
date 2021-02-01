@@ -1,9 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital@1&display=swap');
+@import '../../utils/variables';
+
 .header {
   display: flex;
   justify-content: space-between;
   width: 100%;
   height: 5rem;
-  background-color: #5D21D1;
+  background-color: $color-violet;
+  @include header-text();
 }
 
 .menu-item {
@@ -34,9 +38,10 @@
 .bgMenuItem {
   width: 45%;
   height: 90px;
+  background: transparent;
   display: flex;
   align-items: flex-end;
-  border-radius: 8px;
+  border-radius: $border-radius;
   background-size: cover;
   background-repeat: no-repeat;
   outline: none;

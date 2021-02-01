@@ -1,3 +1,13 @@
+@import '../../utils/variables';
+
+.board-wrapper {
+    width: 100%;
+    height: 100%;
+    padding: 2rem;
+    background-size: contain;
+    background: #fff url("../../utils/img/Prim_1.jpg") no-repeat;
+}  
+
 .boardHeader {
     margin: 1rem;
     display: flex;
@@ -17,7 +27,46 @@
 }
 
 .board__title {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 26px;
-    font-weight: 700;
+    font-weight: 600;
+    font-size: 2.25rem;
+    line-height: 110%;
+    color: #2E186A;
+}
+
+.menu-btn {
+    width: 13.8rem;
+    height: 2.5rem;
+    background-color: $color-violet;
+    border-radius: $border-radius;
+    border-color: $color-violet;
+    @include small-text();
+    font-weight: 500;
+    color: #fff;
+}
+
+.menu-btn:hover {
+    border-color: $color-violet;
+    color: $text-color;
+}
+
+.add-column-btn {
+    margin-right: 3rem;
+    width: 22.5rem;
+    height: 3.625rem;
+    border-radius: $border-radius;
+    border-color: $color-violet;
+    background-color: $color-violet;
+    color: #fff;
+    @include middle-text();
+}
+
+.add-column-btn:hover {
+    border-color: $color-violet;
+    color: $text-color;
+}
+
+.modal-create-board {
+    top: 10rem;
+    border-radius: $border-radius;
+    
 }

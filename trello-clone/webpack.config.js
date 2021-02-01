@@ -34,7 +34,7 @@ module.exports = {
                     'sass-loader',
                 ]
             }, {
-                test: /\.(wav|png|svg)$/,
+                test: /\.(wav|png|svg|jpg)$/,
                 loader: 'file-loader',
                 options: {
                     name: 'assets/[hash].[ext]',

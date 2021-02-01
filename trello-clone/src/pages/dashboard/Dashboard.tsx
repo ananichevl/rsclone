@@ -54,41 +54,42 @@ const Dashboard: React.FC = () => {
 
   const { t } = useTranslation();
 
-  const boardCards = boards.map((board) => (
+  const boardCards = boards.map((board, index) => (
     <Card
       className="board"
+      style={{ backgroundColor: index % 2 ? '#5D21D1' : '#FE7624' }}
       onClick={() => history.push(`board/${board.id}`)}
       hoverable
     >
       <div>
-        {board.title}
+        <h3 className="board-title-card">{board.title}</h3>
       </div>
     </Card>
   ));
 
   return (
     <div className="dashboard-wrapper">
-      <h1>{t('boards')}</h1>
+      <h1 className="dashboard-title">{t('boards')}</h1>
       <div className="loader" style={{ display: isLoaderVisible ? 'flex' : 'none' }}>
         <Spin size="large" />
       </div>
       <div className="boards-container" style={{ display: isLoaderVisible ? 'none' : 'flex' }}>
-        {boardCards}
         <Card className="create-board-btn" onClick={showModal} hoverable>
-          <PlusOutlined className="icon" />
-          {t('create_board')}
+          <PlusOutlined className="icon" style={{ fontSize: '7.9rem', color: '#fff' }} />
         </Card>
+        {boardCards}
       </div>
       <Modal
+        centered
         title={t('new_board')}
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
         footer={[
-          <Button key="back" onClick={handleCancel}>
+          <Button className="modal-cancel-btn" key="back" onClick={handleCancel}>
             {t('modal_cancel_btn')}
           </Button>,
-          <Button key="submit" type="primary" onClick={handleOk}>
+          <Button className="modal-submit-btn" key="submit" type="primary" onClick={handleOk}>
             {t('modal_create_btn')}
           </Button>,
         ]}
@@ -96,6 +97,12 @@ const Dashboard: React.FC = () => {
         <SimpleInput
           onChange={(value) => dispatch(createSelectBoardAction(value))}
           placeholder={t('placeholder_add_title')}
+          onPressEnter={(value) => {
+            if (value) {
+              dispatch(createSelectBoardAction(value));
+              handleOk();
+            }
+          }}
         />
       </Modal>
     </div>

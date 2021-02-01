@@ -225,6 +225,7 @@ const Board: React.FC = () => {
 
   const showConfirm = () => {
     confirm({
+      style: { borderRadius: '8px' },
       title: t('modal_title_remove_board'),
       icon: <ExclamationCircleOutlined />,
       content: `${t('modal_question_remove_board')} ${title}?`,
@@ -258,7 +259,7 @@ const Board: React.FC = () => {
     setVisible(true);
   };
 
-  const columnCards = columns.map((column) => (
+  const columnCards = columns.map((column: ColumnModel) => (
     <Column boardId={id} columnProp={column} />
   ));
 
@@ -281,7 +282,13 @@ const Board: React.FC = () => {
       <div className="loader" style={{ display: isLoaderVisible ? 'flex' : 'none' }}>
         <Spin size="large" />
       </div>
-      <div style={{ display: isLoaderVisible ? 'none' : 'block', height: '100%' }}>
+      <div
+        className="board-wrapper"
+        style={{
+          display: isLoaderVisible ? 'none' : 'block',
+          background: backgroundBody,
+        }}
+      >
         <div className="board-title">
           <div style={{ display: isInputTitleVisible ? 'flex' : 'none' }}>
             <div>
@@ -289,7 +296,16 @@ const Board: React.FC = () => {
                 onChange={(value) => setTitle(value)}
                 placeholder={t('placeholder_add_title')}
                 inputValue={title}
-                onBlur={(value) => console.log(value)}
+                onBlur={(value) => {
+                  if (value) {
+                    handleChangeBoardTitle();
+                  }
+                }}
+                onPressEnter={(value) => {
+                  if (value) {
+                    handleChangeBoardTitle();
+                  }
+                }}
               />
             </div>
             <Button
@@ -304,7 +320,7 @@ const Board: React.FC = () => {
             {title}
           </div>
           <Dropdown overlay={menu} trigger={['click']}>
-            <Button>
+            <Button className="menu-btn">
               {t('menu_btn')}
               <EllipsisOutlined />
             </Button>
@@ -312,13 +328,7 @@ const Board: React.FC = () => {
         </div>
         <div
           className="boardBody"
-          style={{
-            display: 'flex',
-            backgroundSize: 'cover',
-            backgroundRepeat: 'no-repeat',
-            backgroundImage: backgroundBody,
-            backgroundColor: backgroundBody,
-          }}
+          style={{ display: 'flex' }}
         >
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable
@@ -339,16 +349,20 @@ const Board: React.FC = () => {
               )}
             </Droppable>
             <Button
+              className="add-column-btn"
               onClick={() => {
                 setColumns([...columns, { order: columns.length }]);
               }}
               icon={<PlusOutlined />}
-              style={{ marginRight: '3rem' }}
             >
               {t('add_column_btn')}
             </Button>
           </DragDropContext>
-          <SideMenu visibleProp={visible} setNewBgBody={setBackgroundBody} />
+          <SideMenu
+            visibleProp={visible}
+            setNewBgBody={setBackgroundBody}
+            closeBgMenu={setVisible}
+          />
         </div>
       </div>
     </>

@@ -22,6 +22,7 @@ import {
 } from '../../service/Service';
 import createAddTaskAction from '../../store/actions/addTask';
 import createGetBoardAction from '../../store/actions/getBoard';
+import './task.scss';
 
 const { TextArea } = Input;
 
@@ -174,9 +175,9 @@ const Task: React.FC<ITaskProps> = ({
           >
             <Dropdown overlay={menu} trigger={['contextMenu']}>
               <Card
+                className="task"
                 type="inner"
                 style={{ marginBottom: 16 }}
-                hoverable
               >
                 <div>
                   <div className="board-column__title" style={{ display: isInputTitleVisible ? 'flex' : 'none' }}>
@@ -185,6 +186,12 @@ const Task: React.FC<ITaskProps> = ({
                         onChange={(value) => setTaskName(value)}
                         placeholder={t('placeholder_add_title')}
                         onBlur={(value) => {
+                          if (value) {
+                            setTaskName(value);
+                            setIsInputTitleVisible(false);
+                          }
+                        }}
+                        onPressEnter={(value) => {
                           if (value) {
                             setTaskName(value);
                             setIsInputTitleVisible(false);
@@ -208,10 +215,10 @@ const Task: React.FC<ITaskProps> = ({
                   >
                     {taskName}
                     <Button
+                      className="edit-task-btn"
                       icon={<EditOutlined style={{ width: '12px', height: '12px' }} />}
                       onClick={changeTaskName}
                       ghost
-                      style={{ marginLeft: 'auto' }}
                     />
                   </div>
                 </div>

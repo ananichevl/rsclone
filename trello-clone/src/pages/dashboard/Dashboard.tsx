@@ -67,7 +67,7 @@ const Dashboard: React.FC = () => {
   ));
 
   return (
-    <>
+    <div className="dashboard-wrapper">
       <h1>{t('boards')}</h1>
       <div className="loader" style={{ display: isLoaderVisible ? 'flex' : 'none' }}>
         <Spin size="large" />
@@ -98,7 +98,7 @@ const Dashboard: React.FC = () => {
           placeholder={t('placeholder_add_title')}
         />
       </Modal>
-    </>
+    </div>
   );
 };
 

@@ -281,7 +281,7 @@ const Board: React.FC = () => {
       <div className="loader" style={{ display: isLoaderVisible ? 'flex' : 'none' }}>
         <Spin size="large" />
       </div>
-      <div style={{ display: isLoaderVisible ? 'none' : 'block' }}>
+      <div style={{ display: isLoaderVisible ? 'none' : 'block', height: '100%' }}>
         <div className="board-title">
           <div style={{ display: isInputTitleVisible ? 'flex' : 'none' }}>
             <div>

@@ -6,6 +6,7 @@ import {
   UserOutlined, LockOutlined,
 } from '@ant-design/icons';
 import { loginUser } from '../../service/Service';
+import loginImg from '../../utils/img/registr.png';
 
 interface LoginFormModel {
   username: string
@@ -31,8 +32,8 @@ const Login: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div>
-      <h1 style={{ width: '20rem', margin: '5rem auto 1rem', textAlign: 'center' }}>{t('log_in')}</h1>
+    <div className="sign-up">
+      <h1 className="sign-up-title">{t('log_in')}</h1>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Form
           style={{ maxWidth: 300 }}
@@ -42,19 +43,24 @@ const Login: React.FC = () => {
           onFinishFailed={onFinishFailed}
         >
           <Form.Item
-            label={t('username')}
+            // label={t('username')}
             name="username"
             rules={[{ required: true, message: `${t('login_input_message')}` }]}
           >
-            <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder={t('username')} />
+            <Input
+              className="sign-up-input"
+              prefix={<UserOutlined className="site-form-item-icon" />}
+              placeholder={t('username')}
+            />
           </Form.Item>
 
           <Form.Item
-            label={t('password')}
+            // label={t('password')}
             name="password"
             rules={[{ required: true, message: `${t('password_input_message')}` }]}
           >
             <Input
+              className="sign-up-input"
               prefix={<LockOutlined className="site-form-item-icon" />}
               type="password"
               placeholder="Password"
@@ -62,7 +68,7 @@ const Login: React.FC = () => {
           </Form.Item>
 
           <Form.Item>
-            <Button style={{ width: '100%' }} type="primary" htmlType="submit">
+            <Button className="sign-up-btn" style={{ width: '100%' }} type="primary" htmlType="submit">
               {t('log_in_btn')}
             </Button>
             <div>
@@ -72,6 +78,7 @@ const Login: React.FC = () => {
           </Form.Item>
         </Form>
       </div>
+      <img src={loginImg} alt="team" />
     </div>
   );
 };

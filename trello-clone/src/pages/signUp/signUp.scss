@@ -1,0 +1,35 @@
+.sign-up {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10rem;
+  width: 43.75rem;
+  height: 27rem;
+  border: 2px solid #2E186A;
+  border-radius: 8px; 
+}
+
+.sign-up-title {
+  margin: 10rem 0 1rem ;
+  text-align: center;
+}
+
+.sign-up-btn {
+  height: 2.5rem;
+  border-radius: 8px;
+  border: none;
+  background-color:#FE7624;
+  transition: all .3s;
+}
+
+.sign-up-btn:hover {
+  background-color:#ff9100;
+}
+
+.sign-up-input {
+  width: 13.75rem;
+  height: 2.5rem;
+  border: 2px solid #2E186A;
+  border-radius: 8px;
+}

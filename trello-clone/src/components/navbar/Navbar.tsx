@@ -43,17 +43,17 @@ const Navbar: React.FC = () => {
     <div className="header">
       <div className="menu-item">
         <NavLink to="/">
-          <HomeOutlined style={{ fontSize: '16px', color: '#fff' }} />
+          <HomeOutlined className="header-icon" />
         </NavLink>
         <Dropdown overlay={menu} trigger={['click']}>
-          <Button type="text">
-            <GlobalOutlined style={{ fontSize: '16px', color: '#fff' }} />
+          <Button className="header-btn" type="text">
+            <GlobalOutlined className="header-icon" />
           </Button>
         </Dropdown>
       </div>
-      <div style={{ display: 'flex' }}>
-        <Button className="menu-item" type="text" onClick={onLogout} style={{ marginRight: 50 }}>
-          <LogoutOutlined style={{ fontSize: '16px', color: '#fff' }} />
+      <div className="menu-item" style={{ display: 'flex' }}>
+        <Button type="text" onClick={onLogout} style={{ marginRight: 50 }}>
+          <LogoutOutlined className="header-icon" />
         </Button>
       </div>
     </div>

@@ -2,7 +2,8 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
-  height: 3rem;
+  height: 5rem;
+  background-color: #5D21D1;
 }
 
 .menu-item {
@@ -11,6 +12,17 @@
   align-items: center;
   height: 100%;
   width: 2rem;
+}
+
+.header-icon{
+  font-size: 1.5rem;
+  color: #fff;
+}
+
+.header-btn {
+  height: auto;
+  padding: 0;
+  margin: 1rem;
 }
 
 .bgMenuContainer {
@@ -22,7 +34,6 @@
 .bgMenuItem {
   width: 45%;
   height: 90px;
-  background: blue;
   display: flex;
   align-items: flex-end;
   border-radius: 8px;
@@ -35,7 +46,6 @@
   width: 45%;
   height: 90px;
   margin-top: 10px;
-  background: blue;
   display: flex;
   align-items: flex-end;
   border-radius: 8px;

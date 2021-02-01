@@ -250,6 +250,14 @@ const Board: React.FC = () => {
     setIsInputTitleVisible(false);
   };
 
+  const handleChangeBoardBg = async (background: string) => {
+    const board = await updateBoard(id, undefined, background);
+    if (board.status && (board.status === 401 || board.status === 403)) {
+      history.push('/login');
+    }
+    dispatch(createGetBoardAction(board));
+  };
+
   const changeBoardName = () => {
     setTitle(title);
     setIsInputTitleVisible(true);
@@ -349,6 +357,7 @@ const Board: React.FC = () => {
               )}
             </Droppable>
             <Button
+              disabled={columns[columns.length - 1] && !columns[columns.length - 1].id}
               className="add-column-btn"
               onClick={() => {
                 setColumns([...columns, { order: columns.length }]);
@@ -360,7 +369,7 @@ const Board: React.FC = () => {
           </DragDropContext>
           <SideMenu
             visibleProp={visible}
-            setNewBgBody={setBackgroundBody}
+            setNewBgBody={handleChangeBoardBg}
             closeBgMenu={setVisible}
           />
         </div>

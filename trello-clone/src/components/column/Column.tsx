@@ -132,6 +132,7 @@ const Column: React.FC<IColumnProps> = ({
                       />
                     </div>
                     <Button
+                      disabled={columnName === ''}
                       icon={<CheckOutlined />}
                       onClick={handleCheck}
                     />
@@ -162,6 +163,7 @@ const Column: React.FC<IColumnProps> = ({
                 )}
               </Droppable>
               <Button
+                disabled={tasks.findIndex((task) => task.id === '123') !== -1}
                 className="add-task-btn"
                 onClick={() => setTasks([...tasks, { id: '123', order: tasks.length }])}
                 icon={<PlusOutlined />}

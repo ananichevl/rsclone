@@ -23,6 +23,7 @@ const Dashboard: React.FC = () => {
   const [isLoaderVisible, setLoaderVisible] = useState(true);
 
   const showModal = () => {
+    dispatch(createSelectBoardAction(''));
     setIsModalVisible(true);
   };
 
@@ -89,7 +90,7 @@ const Dashboard: React.FC = () => {
           <Button className="modal-cancel-btn" key="back" onClick={handleCancel}>
             {t('modal_cancel_btn')}
           </Button>,
-          <Button className="modal-submit-btn" key="submit" type="primary" onClick={handleOk}>
+          <Button disabled={boardName === ''} className="modal-submit-btn" key="submit" type="primary" onClick={handleOk}>
             {t('modal_create_btn')}
           </Button>,
         ]}

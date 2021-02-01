@@ -24,7 +24,7 @@ const Login: React.FC = () => {
 
   const onFinish = async (value: LoginFormModel) => {
     const user = await loginUser(value.username, value.password);
-    document.cookie = `Bearer=${user.token}`;
+    document.cookie = `Bearer=${user.token}; max-age=${60 * 30}`;
     history.push('/');
   };
 

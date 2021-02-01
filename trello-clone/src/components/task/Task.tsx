@@ -60,6 +60,7 @@ const Task: React.FC<ITaskProps> = ({
   }, [taskProp.description]);
 
   const handleCreateTask = async () => {
+    console.log(taskName);
     if (taskProp.id !== '123') {
       const task = await updateTask(
         boardId,
@@ -200,7 +201,11 @@ const Task: React.FC<ITaskProps> = ({
                         inputValue={taskName}
                       />
                     </div>
-                    <Button icon={<CheckOutlined />} onClick={handleCreateTask} />
+                    <Button
+                      disabled={taskName === ''}
+                      icon={<CheckOutlined />}
+                      onClick={handleCreateTask}
+                    />
                   </div>
                   <div
                     role="button"

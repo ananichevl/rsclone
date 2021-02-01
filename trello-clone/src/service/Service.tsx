@@ -122,9 +122,10 @@ export async function getBoard(id: string): Promise<any> {
   }
 }
 
-export async function updateBoard(id: string, title: string): Promise<any> {
+export async function updateBoard(id: string, title?: string, background?: string): Promise<any> {
   const body = {
     title,
+    background,
   };
 
   const requestOptions = {

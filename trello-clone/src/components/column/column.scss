@@ -40,7 +40,7 @@
 }
 
 .column-body {
-  max-height: 65vh;
+  max-height: 57vh;
   min-height: 1vh;
   overflow-y: auto;
 }
@@ -77,4 +77,10 @@
 .add-task-btn:hover {
   border-color: $color-violet;
   color: $text-color;
+}
+
+@media screen and (max-width: 600px) {
+  .column-body {
+    max-height: 47vh;
+  }  
 }

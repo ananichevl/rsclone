@@ -52,7 +52,7 @@ const SideMenu: React.FC<ISideMenuProps> = ({ visibleProp, setNewBgBody, closeBg
             onKeyUp={(e) => console.log(e)}
             tabIndex={0}
             className="bgMenuItem"
-            style={{ backgroundImage: 'url(https://images.pexels.com/photos/4173624/pexels-photo-4173624.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260)' }}
+            style={{ backgroundImage: 'url(https://images.pexels.com/photos/1024967/pexels-photo-1024967.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260)' }}
             onClick={openImageOptions}
           >
             <span>photos</span>

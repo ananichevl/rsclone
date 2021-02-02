@@ -99,7 +99,9 @@ const Column: React.FC<IColumnProps> = ({
       boardId={boardId}
       columnId={columnId}
       taskProp={task}
-      onClick={() => console.log('click')}
+      onClick={() => {
+        //
+      }}
     />
   ));
 
@@ -122,7 +124,12 @@ const Column: React.FC<IColumnProps> = ({
                         onChange={(value) => setColumnName(value)}
                         placeholder={t('placeholder_add_title')}
                         inputValue={columnName}
-                        onBlur={(value) => console.log(value)}
+                        onBlur={(value) => {
+                          if (value) {
+                            setColumnName(value);
+                            handleCheck();
+                          }
+                        }}
                         onPressEnter={(value) => {
                           if (value) {
                             setColumnName(value);

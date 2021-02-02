@@ -60,7 +60,6 @@ const Task: React.FC<ITaskProps> = ({
   }, [taskProp.description]);
 
   const handleCreateTask = async () => {
-    console.log(taskName);
     if (taskProp.id !== '123') {
       const task = await updateTask(
         boardId,

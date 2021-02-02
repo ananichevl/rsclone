@@ -42,17 +42,15 @@ const Navbar: React.FC = () => {
   return (
     <div className="header">
       <div className="menu-item">
-        <NavLink to="/">
+        <NavLink to="/" className="header-btn">
           <HomeOutlined className="header-icon" />
         </NavLink>
-        <Dropdown overlay={menu} trigger={['click']}>
-          <Button className="header-btn" type="text">
-            <GlobalOutlined className="header-icon" />
-          </Button>
+        <Dropdown overlay={menu} trigger={['click']} className="header-btn">
+          <GlobalOutlined className="header-icon" />
         </Dropdown>
       </div>
       <div className="menu-item" style={{ display: 'flex' }}>
-        <Button type="text" onClick={onLogout} style={{ marginRight: 50 }}>
+        <Button type="text" onClick={onLogout} style={{ width: 5 }}>
           <LogoutOutlined className="header-icon" />
         </Button>
       </div>

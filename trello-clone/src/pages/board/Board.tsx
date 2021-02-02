@@ -128,7 +128,6 @@ const Board: React.FC = () => {
   };
 
   const onDragEnd = (result: DropResult) => {
-    console.log(result);
     const {
       source, destination, type, draggableId,
     } = result;

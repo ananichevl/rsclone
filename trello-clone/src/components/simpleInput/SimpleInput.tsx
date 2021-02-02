@@ -38,7 +38,6 @@ const SimpleInput: React.FC<IInputProps> = ({
           onPressEnter(e.currentTarget.value);
         }}
         value={value}
-        autofocus
       />
     </>
   );

@@ -132,6 +132,8 @@ const Column: React.FC<IColumnProps> = ({
                       />
                     </div>
                     <Button
+                      className="check-btn"
+                      type="text"
                       disabled={columnName === ''}
                       icon={<CheckOutlined />}
                       onClick={handleCheck}

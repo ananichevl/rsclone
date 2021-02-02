@@ -2,7 +2,7 @@
 
 .board-wrapper {
     width: 100%;
-    height: 100%;
+    height: 88vh;
     padding: 2rem;
     background-size: contain;
     background: #fff url("../../utils/img/Prim_1.jpg") no-repeat;
@@ -65,8 +65,20 @@
     color: $text-color;
 }
 
-.modal-create-board {
-    top: 10rem;
+.ok-btn {
     border-radius: $border-radius;
-    
+    border-color: $color-orange;
+    background-color: $color-orange;
+    color: #fff;
+}
+
+.cancel-btn {
+    border-radius: $border-radius;
+    border-color: $color-orange;
+    color: $color-orange;
+}
+
+.ok-btn:hover {
+    background-color: $color-orange-light;
+    border-color: $color-orange-light;
 }

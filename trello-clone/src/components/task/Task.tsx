@@ -6,7 +6,7 @@ import {
   Button, Card, Modal, Input, Dropdown, Menu, Popover,
 } from 'antd';
 import {
-  CheckOutlined, EditOutlined, AlignLeftOutlined, ProjectOutlined,
+  CheckOutlined, EditOutlined, AlignLeftOutlined,
 } from '@ant-design/icons';
 import { Draggable } from 'react-beautiful-dnd';
 import { useTranslation } from 'react-i18next';
@@ -181,7 +181,7 @@ const Task: React.FC<ITaskProps> = ({
                 style={{ marginBottom: 16 }}
               >
                 <div>
-                  <div className="board-column__title" style={{ display: isInputTitleVisible ? 'flex' : 'none' }}>
+                  <div style={{ display: isInputTitleVisible ? 'flex' : 'none' }}>
                     <div>
                       <SimpleInput
                         onChange={(value) => setTaskName(value)}
@@ -202,6 +202,8 @@ const Task: React.FC<ITaskProps> = ({
                       />
                     </div>
                     <Button
+                      className="check-btn"
+                      type="text"
                       disabled={taskName === ''}
                       icon={<CheckOutlined />}
                       onClick={handleCreateTask}
@@ -233,9 +235,9 @@ const Task: React.FC<ITaskProps> = ({
         )}
       </Draggable>
       <Modal
+        centered
         title={(
           <div style={{ display: 'flex' }}>
-            <ProjectOutlined className="icon-task-title" />
             <div style={{ display: isInputTitleVisible ? 'flex' : 'none' }}>
               <div>
                 <SimpleInput
@@ -250,7 +252,11 @@ const Task: React.FC<ITaskProps> = ({
                   inputValue={taskName}
                 />
               </div>
-              <Button icon={<CheckOutlined />} onClick={handleCreateTask} />
+              <Button
+                className="check-btn"
+                icon={<CheckOutlined />}
+                onClick={handleCreateTask}
+              />
             </div>
             <div
               style={{ display: isInputTitleVisible ? 'none' : 'flex', outline: 'none' }}
@@ -287,13 +293,14 @@ const Task: React.FC<ITaskProps> = ({
             }
             trigger="click"
           >
-            <Button style={{ cursor: 'help' }}>
+            <Button className="hint-btn">
               {t('formatting_btn')}
             </Button>
           </Popover>
         </div>
         <TextArea
           rows={4}
+          className="textarea"
           style={{ display: isTextAreaVisible ? 'flex' : 'none' }}
           onBlur={(e) => {
             if (e.target.value !== '') {

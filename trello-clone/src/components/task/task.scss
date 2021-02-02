@@ -23,3 +23,15 @@
 .edit-task-btn:hover {
   color: $color-violet;
 }
+
+.textarea {
+  border: 2px solid $text-color;
+  border-radius: $border-radius;
+}
+
+.hint-btn {
+  border: 2px solid $color-orange;
+  border-radius: $border-radius;
+  color: $color-orange;
+  cursor: help;
+}

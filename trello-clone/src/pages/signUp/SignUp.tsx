@@ -34,7 +34,7 @@ const SignUp: React.FC = () => {
       <h1 className="sign-up-title">{t('sign_up')}</h1>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Form
-          style={{ maxWidth: 400 }}
+          style={{ maxWidth: 300 }}
           name="basic"
           initialValues={{ remember: true }}
           onFinish={onFinish}

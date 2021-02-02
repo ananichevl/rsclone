@@ -225,12 +225,13 @@ const Board: React.FC = () => {
 
   const showConfirm = () => {
     confirm({
-      style: { borderRadius: '8px' },
       title: t('modal_title_remove_board'),
       icon: <ExclamationCircleOutlined />,
       content: `${t('modal_question_remove_board')} ${title}?`,
       okText: t('modal_remove_btn'),
       cancelText: t('modal_cancel_btn'),
+      okButtonProps: { className: 'ok-btn' },
+      cancelButtonProps: { className: 'cancel-btn' },
       onOk() {
         RemoveBoard();
       },
@@ -317,6 +318,8 @@ const Board: React.FC = () => {
               />
             </div>
             <Button
+              className="check-btn"
+              type="text"
               icon={<CheckOutlined />}
               onClick={handleChangeBoardTitle}
             />

@@ -195,6 +195,7 @@ const Task: React.FC<ITaskProps> = ({
                           if (value) {
                             setTaskName(value);
                             setIsInputTitleVisible(false);
+                            handleCreateTask();
                           }
                         }}
                         inputValue={taskName}
@@ -252,6 +253,7 @@ const Task: React.FC<ITaskProps> = ({
                 />
               </div>
               <Button
+                type="text"
                 className="check-btn"
                 icon={<CheckOutlined />}
                 onClick={handleCreateTask}

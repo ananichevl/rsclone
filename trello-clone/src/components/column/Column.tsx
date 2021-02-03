@@ -127,7 +127,6 @@ const Column: React.FC<IColumnProps> = ({
                         onBlur={(value) => {
                           if (value) {
                             setColumnName(value);
-                            handleCheck();
                           }
                         }}
                         onPressEnter={(value) => {
@@ -143,7 +142,9 @@ const Column: React.FC<IColumnProps> = ({
                       type="text"
                       disabled={columnName === ''}
                       icon={<CheckOutlined />}
-                      onClick={handleCheck}
+                      onClick={() => {
+                        handleCheck();
+                      }}
                     />
                   </div>
                   <div

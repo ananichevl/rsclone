@@ -1,0 +1,37 @@
+@import '../../utils/variables';
+
+.sign-up {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5rem;
+  width: 43.75rem;
+  height: 27rem;
+  border: 2px solid $text-color;
+  border-radius: $border-radius; 
+}
+
+.sign-up-title {
+  margin: 10rem 0 1rem ;
+  text-align: center;
+}
+
+.sign-up-btn {
+  height: 2.5rem;
+  border-radius: $border-radius;
+  border: none;
+  background-color: $color-orange;
+  transition: all .3s;
+}
+
+.sign-up-btn:hover {
+  background-color: $color-orange-light;
+}
+
+.sign-up-input {
+  width: 13.75rem;
+  height: 2.5rem;
+  border: 2px solid $text-color;
+  border-radius: $border-radius;
+}
